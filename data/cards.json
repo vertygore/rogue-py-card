@@ -1,0 +1,85 @@
+{
+    "_comment" : "Alle Karten die im Spiel erhältlich sind",
+    "spells": [
+        {
+            "fireball": {
+                "name": "Fireball",
+                "type": "spell",
+                "dmg": 10,
+                "cost": 5,
+                "desc": "Description for Fireball"
+            }
+        }
+    ],
+    "defense_spells": [
+        {
+            "shield": {
+                "name": "Small Shielding Spell",
+                "type": "defense_spells",
+                "block": 10,
+                "cost": 5,
+                "desc": "Description for Small Shielding Spell"
+            }
+        }
+    ],
+    "attacks": [
+        {
+            "uppercut": {
+                "name": "Uppercut",
+                "type": "attack",
+                "dmg": 5,
+                "cost": 0,
+                "desc": "Description for Uppercut"
+            }
+        }
+    ],
+    "potions":
+    [
+        {
+            "small­_health_potion" : {
+                "name": "Small Health Potion",
+                "type": "potion",
+                "hp_heal": 10,
+                "mana_heal": 0,
+                "dmg": 0,
+                "desc": "Description for Small Health Potion"
+            },
+            "small_mana_potion" : {
+                "name": "Small Mana Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 10,
+                "dmg": 0,
+                "desc": "Description for Small Mana Potion"
+            },
+            "small_dmg_potion" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            }
+        }
+    ],
+    "weapons": [
+        {
+            "basic_sword": {
+                "name": "Basic Sword",
+                "type": "weapon",
+                "subtype": "sword",
+                "dmg_amp": 1.1,
+                "cost": 2,
+                "desc": "Description for Basic Sword"
+            },
+            "basic_staff": {
+                "name": "Basic Staff",
+                "type": "weapon",
+                "subtype": "staff",
+                "dmg_amp": 1.1,
+                "cost": 4,
+                "desc": "Description for Basic Staff"
+            }
+        }
+    ]
+}
