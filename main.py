@@ -1,4 +1,5 @@
 import tcod
+import card
 
 """
 GAMENAME_TBD von Daniel Kern und Angelo Walburger
@@ -19,7 +20,35 @@ Optionen zum upgraden von Runs:
 """
 
 def main():
+    cards = [
+        card.card("Fireball", 3, 0, 5, "Deal 5 damage to a target.", "spell"),
+        card.card("Shield", 2, 5, 0, "Gain 5 HP.", "defensespell"),
+        card.card("Sword", 1, 0, 3, "Deal 3 damage to a target.", "weapon"),
+        card.card("Healing Potion", 2, 0, 0, "Restore 5  HP.", "potion"),
+        card.card("Lightning Bolt", 4, 0, 7, "Deal 7 damage to a target.", "spell"),
+        card.card("Axe", 3, 0, 4, "Deal 4 damage to a target.", "weapon"),
+        card.card("Armor", 2, 10, 0, "Gain 10 HP.", "defensespell"),
+        card.card("Fire Staff", 5, 0, 10, "Deal 10 damage to a target.", "weapon"),
+        card.card("Mana Potion", 1, 0, 0, "Gain 5 mana.", "potion")]
     print("Hello World!")
+
+    # Main Fenster
+    root = tcod.console.Console(100, 80)
+    with tcod.context.new(  # Neues Fenster (col = Breite, rows = Höhe)
+        columns=root.width, rows=root.height,
+    ) as context:
+        while True:  # Main loop
+            root.clear()
+            root.print(x=0, y=0, text="YOYOYOYO WAS GEHT!")
+            context.present(root)  # Fenster anzeigen
+
+            for event in tcod.event.get():
+                context.convert_event(event)  # Koordinaten der Maus auslesen
+                print(event)  # Event ausgeben
+                match event:
+                    case tcod.event.Quit():
+                        raise SystemExit
+
 
 
 if __name__ == "__main__":
