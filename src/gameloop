@@ -1,0 +1,18 @@
+import Player
+import Enemy
+
+enemy = enemy("Goblin", 30, 5, "just end it")
+player = Player(100, 0, 5)
+while true:
+    player.turn
+    enemy.attack(player)
+    player.attack(enemy)
+    if enemy.hp <= 0:
+        print("You defeated the enemy!")
+        break
+    if player.hp <= 0:
+        print("You were defeated by the enemy!")
+        break
+    print(f"Enemy HP: {enemy.hp}, Player HP: {player.hp}")
+    
+    
