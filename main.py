@@ -1,4 +1,4 @@
-import tcod
+import pygame
 import card
 
 """
@@ -32,22 +32,6 @@ def main():
         card.card("Mana Potion", 1, 0, 0, "Gain 5 mana.", "potion")]
     print("Hello World!")
 
-    # Main Fenster
-    root = tcod.console.Console(100, 80)
-    with tcod.context.new(  # Neues Fenster (col = Breite, rows = Höhe)
-        columns=root.width, rows=root.height,
-    ) as context:
-        while True:  # Main loop
-            root.clear()
-            root.print(x=0, y=0, text="YOYOYOYO WAS GEHT!")
-            context.present(root)  # Fenster anzeigen
-
-            for event in tcod.event.get():
-                context.convert_event(event)  # Koordinaten der Maus auslesen
-                print(event)  # Event ausgeben
-                match event:
-                    case tcod.event.Quit():
-                        raise SystemExit
 
 
 

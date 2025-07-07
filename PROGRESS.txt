@@ -1,0 +1,31 @@
+PROGRESS TRACKING
+X = DONE
+prio sortiert
+
+ANGELO:
+1 UI Plan ( )
+2 UI Grundstruktur ( )
+3 Menü mit Szenenwechsel ( )
+4 Sprites ( )
+5 Karten erstellen ( )
+
+DANIEL:
+Logik:
+    1 Karten in Deck (RICHTIGE REIHENFOLGE) ( )
+    2 Karten ziehen ( )
+    3 Karten spielen ( )
+    4 HP / Mana Management wenn Karte gespielt ( )
+    5 Game Over / Win ( )
+6 Gegner AI ( )
+
+
+Sonstiges (UNSORTIERT):
+
+Spielstand speichern / Progress
+Schwierigkeit
+Audio
+Einstellungen
+Config
+Boss AI
+Logischer Gameloop (Replayability)
+Animations
