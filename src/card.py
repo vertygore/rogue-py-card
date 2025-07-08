@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-import Player
-import Enemy
 
 class Card(ABC):
     def __init__(self, name: str, cost: int, description: str):
@@ -35,24 +33,3 @@ class Weapon(Card):
         super().__init__(name, cost, description)
         self.damage = damage
         
-def play(player: Player, card: Card, enemy: Enemy):
-    print(f"Playing card: {card}")
-
-    if isinstance(card, OffSpell):
-        print(f"Dealing {card.damage} damage with {card.name}.")
-        enemy.hp -= card.damage
-        return
-    elif isinstance(card, DefenseSpell):
-        player.hp += card.heal
-        print(f"Healing {card.heal} HP with {card.name}.")
-        return
-    elif isinstance(card, Potion):
-        player.mana += card.manaIncrease
-        player.hp += card.heal
-        print(f"Healing {card.heal} HP and increasing mana by {card.manaIncrease} with {card.name}.")
-        return
-    elif isinstance(card, Weapon):
-        player.equipmentdmg = card.damage
-        print(f"Increasing equipment damage by {card.damage} with {card.name}.")
-        return
-    return

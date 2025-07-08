@@ -60,4 +60,9 @@ def load_Deck(jsonFilePath: str) -> List[Card]:
 
     return deck
 
-def draw_card(deck: list[Card]) -> Card:
+#def draw_card(deck: list[Card]) -> Card:
+
+if __name__ == "__main__":
+    deck = load_Deck('data/card.json')
+    for card in deck:
+        print(card)
