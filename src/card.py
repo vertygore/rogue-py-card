@@ -37,9 +37,7 @@ class Weapon(Card):
         
 def play(player: Player, card: Card, enemy: Enemy):
     print(f"Playing card: {card}")
-    # Here you would implement the logic for what happens when a card is played
-    # For example, if it's an OffSpell, apply damage to the enemy, etc.
-    # This is just a placeholder for demonstration purposes.
+
     if isinstance(card, OffSpell):
         print(f"Dealing {card.damage} damage with {card.name}.")
         enemy.hp -= card.damage
@@ -49,12 +47,12 @@ def play(player: Player, card: Card, enemy: Enemy):
         print(f"Healing {card.heal} HP with {card.name}.")
         return
     elif isinstance(card, Potion):
-        player.mana
+        player.mana += card.manaIncrease
         player.hp += card.heal
         print(f"Healing {card.heal} HP and increasing mana by {card.manaIncrease} with {card.name}.")
         return
     elif isinstance(card, Weapon):
-        player.equipmentdmg += card.damage
+        player.equipmentdmg = card.damage
         print(f"Increasing equipment damage by {card.damage} with {card.name}.")
         return
     return
