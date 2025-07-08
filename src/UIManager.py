@@ -5,24 +5,36 @@ from pygame_widgets.button import Button
 
 class UIManager():
     def __init__(self):
+        """
+        Initialisiert pygame und setzt alle wichtigen Grundvariablen wie benötigt
+        """
         pg.init()
 
-        self.clock = pg.time.Clock()  # set up clock
+        self.clock = pg.time.Clock()  # Clock damit der Loop nur 60x pro Sekunde ausgeführt wird
+        info = pg.display.Info() 
+        self.width, self.height = info.current_w, info.current_h
+        self.win = pg.display.set_mode((self.width, self.height), pg.RESIZABLE) # Damit das Fenster Maximized werden kann
+        
+        # default vars
+        self.default_btn_dim = 75
+        self.default_fontsize = 12
         self.fps = 60
         self.margin = 20
         self.player_hp_value = 100
         self.enemy_hp_value = 100
-        info = pg.display.Info()  # Infos zum Bildschirm
-        self.width, self.height = info.current_w, info.current_h
-        self.win = pg.display.set_mode((self.width, self.height), pg.RESIZABLE)
-        self.delta_time = 0.1
-        self.default_btn_dim = 100
+        self.player_mana_value = 100
+        self.enemy_mana_value = 100
+        self.player_mana_value = 100
+        self.enemy_mana_value = 100
         self.playerhand = []
         self.enemyhand = []
 
         self.create_window()
 
     def create_window(self):
+        """
+        Erstellt das Fenster der Appliaktion und listened nach Events die auftauchen
+        """
         win = self.win
         margin = 20
 
@@ -32,17 +44,20 @@ class UIManager():
         self.hpWidth = 150
         self.player_hpHeight = 150
         self.enemy_hpHeight = 150
+        self.manaWidth = 150
+        self.player_manaHeight = 150
+        self.enemy_manaHeight = 150
         self.margin = margin
 
+        # GAME LOOP
         running = True
         while running:
             events = pg.event.get()
 
             for event in events:
-                if event.type == pg.QUIT:
+                if event.type == pg.QUIT: # Fenster schließen
                     running = False
-                elif event.type == pg.VIDEORESIZE:
-                    # Fenstergröße anpassen
+                elif event.type == pg.VIDEORESIZE: # Fenstergröße ändern
                     self.width, self.height = event.w, event.h
                     self.win = pg.display.set_mode((self.width, self.height), pg.RESIZABLE)
                     self.create_buttons()
@@ -51,7 +66,7 @@ class UIManager():
             # VISUALS
             self.win.fill((120, 50, 75))
 
-            # HP BARS
+            # BARS
             # Spieler HP
             player_hpX = self.width - self.hpWidth - self.margin
             player_hpY = self.height - self.player_hpHeight - self.margin
@@ -68,12 +83,33 @@ class UIManager():
             enemy_hp_border_rect = pg.Rect(enemy_hpX, enemy_hpY, self.hpWidth, self.enemy_hpHeight)
             enemy_hp_fill_rect = pg.Rect(enemy_hpX, enemy_fill_y, self.hpWidth, enemy_fill_height)
 
-            # Zeichnen
+            # Spieler Mana
+            player_manaX = self.width - self.manaWidth - self.margin
+            player_manaY = self.height - self.player_manaHeight - self.margin - self.player_manaHeight
+            player_mana_fill_height = int((self.player_mana_value / 100) * self.player_manaHeight)
+            player_mana_fill_y = player_manaY + (self.player_manaHeight - player_mana_fill_height)
+            player_mana_border_rect = pg.Rect(player_manaX, player_manaY, self.manaWidth, self.player_manaHeight)
+            player_mana_fill_rect = pg.Rect(player_manaX, player_mana_fill_y, self.manaWidth, player_mana_fill_height)
+
+            # Gegner Mana
+            enemy_manaX = self.margin
+            enemy_manaY = self.margin + self.enemy_manaHeight
+            enemy_mana_fill_height = int((self.enemy_mana_value / 100) * self.enemy_manaHeight)
+            enemy_mana_fill_y = enemy_manaY + (self.enemy_manaHeight - enemy_mana_fill_height)
+            enemy_mana_border_rect = pg.Rect(enemy_manaX, enemy_manaY, self.manaWidth, self.enemy_manaHeight)
+            enemy_mana_fill_rect = pg.Rect(enemy_manaX, enemy_mana_fill_y, self.manaWidth, enemy_mana_fill_height)
+
+            # Render
             pg.draw.rect(self.win, (255, 255, 255), player_hp_border_rect, width=3)
             pg.draw.rect(self.win, (0, 200, 0), player_hp_fill_rect)
             pg.draw.rect(self.win, (255, 255, 255), enemy_hp_border_rect, width=3)
             pg.draw.rect(self.win, (0, 200, 0), enemy_hp_fill_rect)
+            pg.draw.rect(self.win, (255, 255, 255), player_mana_border_rect, width=3)
+            pg.draw.rect(self.win, (0, 0, 200), player_mana_fill_rect)
+            pg.draw.rect(self.win, (255, 255, 255), enemy_mana_border_rect, width=3)
+            pg.draw.rect(self.win, (0, 0, 200), enemy_mana_fill_rect)
 
+            # Refresh
             pw.update(events)
             pg.display.flip()
             self.clock.tick(self.fps)
@@ -81,7 +117,12 @@ class UIManager():
         pg.quit()
 
     def create_buttons(self):
+        """
+        Erstellt alle Buttons die auf einem Spielfeld vorhanden sind und positioniert sie
+        """
         margin = 20
+        self.playerhand.clear()
+        self.enemyhand.clear()
 
         # SETTINGS BUTTON
         settingsWidth = self.default_btn_dim
@@ -90,74 +131,127 @@ class UIManager():
         settingsY = margin
         self.settingsBtn = Button(
             self.win, settingsX, settingsY, settingsWidth, settingsHeight, text='SETTINGS',
-            fontSize=20, margin=margin,
+            fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
             onClick=lambda: print("Clicked SETTINGS")
         )
 
         # LOSE HP BUTTON
-        player_testHpWidth = self.default_btn_dim
-        player_testHpHeight = self.default_btn_dim
+        player_testHpWidth = self.default_btn_dim 
+        player_testHpHeight = self.default_btn_dim 
         player_testHpX = self.win.get_width() - player_testHpWidth - margin
-        player_testHpY = margin*2 + settingsHeight
+        player_testHpY = margin*2 + self.default_btn_dim
         self.player_testHp = Button(
             self.win, player_testHpX, player_testHpY, player_testHpWidth, player_testHpHeight, text='LOSE HP (P)',
-            fontSize=20, margin=margin,
+            fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.lose_hp()
+            onClick=lambda: self.set_ressource(ressource="hp", owner="player")
         )
 
         # FILL HP BUTTON
         player_fillHpWidth = self.default_btn_dim
         player_fillHpHeight = self.default_btn_dim
         player_fillHpX = self.win.get_width() - player_fillHpWidth - margin
-        player_fillHpY = margin*3 + settingsHeight + player_testHpHeight
+        player_fillHpY = margin*3 + self.default_btn_dim*2
         self.player_fillHp = Button(
             self.win, player_fillHpX, player_fillHpY, player_fillHpWidth, player_fillHpHeight, text='FILL HP (P)',
-            fontSize=20, margin=margin,
+            fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.fill_hp()
+            onClick=lambda: self.set_ressource(ressource="hp", owner="player", filling=True)
         )
 
         # LOSE ENEMY HP BUTTON
         enemy_testHpWidth = self.default_btn_dim
         enemy_testHpHeight = self.default_btn_dim
         enemy_testHpX = self.win.get_width() - enemy_testHpWidth*2 - margin*2
-        enemy_testHpY = margin*2 + settingsHeight
+        enemy_testHpY = margin*2 + self.default_btn_dim
         self.enemy_testHp = Button(
             self.win, enemy_testHpX, enemy_testHpY, enemy_testHpWidth, enemy_testHpHeight, text='LOSE HP (E)',
-            fontSize=20, margin=margin,
+            fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.lose_hp(owner="enemy")
+            onClick=lambda: self.set_ressource(ressource="hp", owner="enemy")
         )
 
         # FILL ENEMY HP BUTTON
         enemy_fillHpWidth = self.default_btn_dim
         enemy_fillHpHeight = self.default_btn_dim
         enemy_fillHpX = self.win.get_width() - enemy_fillHpWidth*2 - margin*2
-        enemy_fillHpY = margin*3 + settingsHeight + enemy_testHpHeight
+        enemy_fillHpY = margin*3 + self.default_btn_dim*2
         self.enemy_fillHp = Button(
             self.win, enemy_fillHpX, enemy_fillHpY, enemy_fillHpWidth, enemy_fillHpHeight, text='FILL HP (E)',
-            fontSize=20, margin=margin,
+            fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.fill_hp(owner="enemy")
+            onClick=lambda: self.set_ressource(ressource="hp", owner="enemy", filling=True)
+        )
+
+        # LOSE MANA BUTTON
+        player_testManaWidth = self.default_btn_dim 
+        player_testManaHeight = self.default_btn_dim 
+        player_testManaX = self.win.get_width() - player_testManaWidth - margin
+        player_testManaY = margin*4 + self.default_btn_dim*3
+        self.player_testMana = Button(
+            self.win, player_testManaX, player_testManaY, player_testManaWidth, player_testManaHeight, text='LOSE MANA (P)',
+            fontSize=self.default_fontsize, margin=margin,
+            inactiveColour=(255, 0, 0),
+            pressedColour=(0, 255, 0), radius=20,
+            onClick=lambda: self.set_ressource(ressource="mana", owner="player")
+        )
+
+        # FILL MANA BUTTON
+        player_fillManaWidth = self.default_btn_dim
+        player_fillManaHeight = self.default_btn_dim
+        player_fillManaX = self.win.get_width() - player_fillManaWidth - margin
+        player_fillManaY = margin*5 + self.default_btn_dim*4
+        self.player_fillMana = Button(
+            self.win, player_fillManaX, player_fillManaY, player_fillManaWidth, player_fillManaHeight, text='FILL MANA (P)',
+            fontSize=self.default_fontsize, margin=margin,
+            inactiveColour=(255, 0, 0),
+            pressedColour=(0, 255, 0), radius=20,
+            onClick=lambda: self.set_ressource(ressource="mana", owner="player", filling=True)
+        )
+
+        # LOSE ENEMY MANA BUTTON
+        enemy_testManaWidth = self.default_btn_dim
+        enemy_testManaHeight = self.default_btn_dim
+        enemy_testManaX = self.win.get_width() - enemy_testManaWidth*2 - margin*2
+        enemy_testManaY = margin*4 + self.default_btn_dim*3
+        self.enemy_testMana = Button(
+            self.win, enemy_testManaX, enemy_testManaY, enemy_testManaWidth, enemy_testManaHeight, text='LOSE MANA (E)',
+            fontSize=self.default_fontsize, margin=margin,
+            inactiveColour=(255, 0, 0),
+            pressedColour=(0, 255, 0), radius=20,
+            onClick=lambda: self.set_ressource(ressource="mana", owner="enemy")
+        )
+
+        # FILL ENEMY MANA BUTTON
+        enemy_fillManaWidth = self.default_btn_dim
+        enemy_fillManaHeight = self.default_btn_dim
+        enemy_fillManaX = self.win.get_width() - enemy_fillManaWidth*2 - margin*2
+        enemy_fillManaY = margin*5 + self.default_btn_dim*4
+        self.enemy_fillMana = Button(
+            self.win, enemy_fillManaX, enemy_fillManaY, enemy_fillManaWidth, enemy_fillManaHeight, text='FILL MANA (E)',
+            fontSize=self.default_fontsize, margin=margin,
+            inactiveColour=(255, 0, 0),
+            pressedColour=(0, 255, 0), radius=20,
+            onClick=lambda: self.set_ressource(ressource="mana", owner="enemy", filling=True)
         )
 
         # HANDS
         # UTIL
         handsize = 5
         card_width = self.width / 10
-        card_height = self.width / 5
-        card_xanchor = self.width / 2 - (card_width / 2)*handsize
-        handoffset_x = card_width + self.margin
+        card_height = self.width / 8
+        total_hand_width = handsize * card_width + (handsize - 1) * margin
+        card_xanchor = self.width / 2 - total_hand_width / 2
+        handoffset_x = card_width + margin
 
         # PLAYER
-        card_yanchor = self.height - card_height - self.margin
+        card_yanchor = self.height - card_height - margin
         for i in range(handsize):
             self.playerhand.append(Button(self.win, card_xanchor + (handoffset_x * i), card_yanchor, card_width, card_height, text=f"EMPTY {i}", 
                                      fontSize=20, margin=margin, inactiveColour=(255, 0, 0), pressedColour=(0, 255, 0), 
@@ -170,41 +264,78 @@ class UIManager():
                                      fontSize=20, margin=margin, inactiveColour=(255, 0, 0), pressedColour=(0, 255, 0), 
                                      radius=20, onClick=lambda i=i: print(f"CLICKED ENEMY CARD {i}")))
 
-        # ENEMY
+        self.player_combatfield = Button(self.win, (self.width / 2 - card_width / 2) - card_width / 2 - margin, self.height / 2 - card_height / 2, card_width, card_height, text=f"P COMBAT",
+                                    fontSize=20, margin=margin, inactiveColour=(255, 0, 0), pressedColour=(0, 255, 0),
+                                    radius=20, onClick=lambda: print(f"CLICKED PLAYER COMBAT FIELD"))
+        
+        self.enemy_combatfield = Button(self.win, (self.width / 2 - card_width / 2) + card_width / 2 + margin, self.height / 2 - card_height / 2, card_width, card_height, text=f"E COMBAT",
+                                    fontSize=20, margin=margin, inactiveColour=(255, 0, 0), pressedColour=(0, 255, 0),
+                                    radius=20, onClick=lambda: print(f"CLICKED ENEMY COMBAT FIELD"))
+        
 
-    def lose_hp(self, owner="player"):
-        if owner == "player":
-            hp_value = self.player_hp_value
-            print(f"HP: {hp_value} - 5 = {hp_value-5}")
-            hp_value -= 5
-            if hp_value < 0:
-                print(f"HP: ! REACHED ZERO")
-                hp_value = 0
-            self.player_hp_value = hp_value
-        elif owner == "enemy":
-            hp_value = self.enemy_hp_value
-            print(f"HP: {hp_value} - 5 = {hp_value-5}")
-            hp_value -= 5
-            if hp_value < 0:
-                print(f"HP: ! REACHED ZERO")
-                hp_value = 0
-            self.enemy_hp_value = hp_value
-        else:
+    def set_ressource(self, ressource, owner, loseVal=5, fillVal=100, filling=False):
+        if owner == "player": # Player?
+            if ressource == "hp": # HP?
+                value = self.player_hp_value
+                if filling == False: # Addieren?
+                    print(f"HP (P): {value} - {loseVal} = {value-5}")
+                    value -= loseVal
+                    if value < 0: # Leer?
+                        print(f"HP (P): ! REACHED ZERO")
+                        value = 0
+                    self.player_hp_value = value
+                else: # Subtrahieren?
+                    value += fillVal
+                    if value > 100: # Voll?
+                        value = 100
+                    print(f"HP (P): RESET TO 100 (FULL)")
+                    self.player_hp_value = value
+            elif ressource == "mana": # Mana?
+                value = self.player_mana_value
+                if filling == False: # Addieren?
+                    print(f"MANA (P): {value} - {loseVal} = {value-5}")
+                    value -= loseVal
+                    if value < 0: # Leer?
+                        print(f"MANA (P): ! REACHED ZERO")
+                        value = 0
+                    self.player_mana_value = value
+                else: # Subtrahieren?
+                    value += fillVal
+                    if value > 100: # Voll?
+                        value = 100
+                    print(f"MANA (P): RESET TO 100 (FULL)")
+                    self.player_mana_value = value
+        elif owner == "enemy": # Enemy ?
+            if ressource == "hp": # HP ?
+                value = self.enemy_hp_value
+                if filling == False: # Addieren?
+                    print(f"HP (E): {value} - {loseVal} = {value-5}")
+                    value -= loseVal
+                    if value < 0: # Leer?
+                        print(f"HP (E): ! REACHED ZERO")
+                        value = 0
+                    self.enemy_hp_value = value
+                else: # Subtrahieren?
+                    value += fillVal
+                    if value > 100: # Voll?
+                        value = 100
+                    print(f"HP (E): RESET TO 100 (FULL)")
+                    self.enemy_hp_value = value
+            elif ressource == "mana": # Mana?
+                value = self.enemy_mana_value
+                if filling == False: # Addieren?
+                    print(f"MANA (E): {value} - {loseVal} = {value-5}")
+                    value -= loseVal
+                    if value < 0: # Leer?
+                        print(f"MANA (E): ! REACHED ZERO")
+                        value = 0
+                    self.enemy_mana_value = value
+                else: # Subtrahieren?
+                    value += fillVal
+                    if value > 100: # Voll?
+                        value = 100
+                    print(f"MANA (E): RESET TO 100 (FULL)")
+                    self.enemy_mana_value = value
+        else: # INVALID OWNER?
             print(f"INVALID OWNER FOR LOSE_HP")
             return None
-        
-        
-        
-
-
-    def fill_hp(self, owner="player"):
-        if owner == "player":
-            self.player_hp_value = 100
-        elif owner == "enemy":
-            self.enemy_hp_value = 100
-        else:
-            print(f"INVALID OWNER FOR LOSE_HP")
-            return None
-        print(f"HP: RESET TO 100 (FULL)")
-        
-        
