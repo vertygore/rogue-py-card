@@ -8,6 +8,7 @@ class Player:
         self.hp = hp
         self.mana = mana 
         self.hand = hand if hand is not None else []
+        
     def turn(self, chosenCard: Card, enemy: Enemy):
         play(self, chosenCard, enemy)
         
