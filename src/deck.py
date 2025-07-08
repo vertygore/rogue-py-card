@@ -1,8 +1,11 @@
 from Card import Card, OffSpell, Potion, DefenseSpell, Weapon
 import json
 from typing import List
+import os
+
 
 def load_Deck(jsonFilePath: str) -> List[Card]:
+
     with open(jsonFilePath, 'r') as file:
         data = json.load(file)
     deck: List[Card] = []
@@ -60,9 +63,18 @@ def load_Deck(jsonFilePath: str) -> List[Card]:
 
     return deck
 
-#def draw_card(deck: list[Card]) -> Card:
+
+BASE_DIR = os.path.dirname(__file__)
+JSON_PATH = os.path.join(BASE_DIR, '..', 'data', 'cards.json')
+
+deck = load_Deck(os.path.abspath(JSON_PATH))
+
+def draw_card(deck: List[Card]) -> Card:
+    if not deck:
+        raise ValueError("Deck is empty, cannot draw a card.")
+    return deck.pop(0)  # Draw the top card from the deck
 
 if __name__ == "__main__":
-    deck = load_Deck('data/card.json')
-    for card in deck:
+    print("Deck loaded with the following cards:")
+    for card in deck:   
         print(card)
