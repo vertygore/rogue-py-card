@@ -1,4 +1,4 @@
-import UIManager as uim
+import src.UIManager as uim
 
 """
 GAMENAME_TBD von Daniel Kern und Angelo Walburger
