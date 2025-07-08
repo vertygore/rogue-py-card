@@ -86,10 +86,6 @@ def load_Deck(jsonFilePath: str) -> List[Card]:
 
     return deck
 
-BASE_DIR = os.path.dirname(__file__)
-JSON_PATH = os.path.join(BASE_DIR, '..', 'data', 'cards.json')
-
-deck = load_Deck(os.path.abspath(JSON_PATH))
 
 
 def draw_card(deck: List[Card]) -> Card:
