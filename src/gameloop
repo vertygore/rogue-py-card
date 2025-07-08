@@ -1,10 +1,11 @@
 import Player
 import Enemy
+import Card
 
-enemy = enemy("Goblin", 30, 5, "just end it")
+enemy = Enemy("Goblin", 30, 5, "Green and mean")
 player = Player(100, 0, 5)
-while true:
-    player.turn
+while True:
+    player.turn(player.hand[0])  # in a real game, you would choose a card from the player's hand
     enemy.attack(player)
     player.attack(enemy)
     if enemy.hp <= 0:
