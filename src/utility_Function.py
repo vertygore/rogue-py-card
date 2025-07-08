@@ -3,7 +3,6 @@ from Card import Card, OffSpell, Potion, DefenseSpell, Weapon
 from Player import Player
 from Enemy import Enemy
 import json
-import os
 
 def play(player: Player, card: Card, enemy: Enemy):
     print(f"Playing card: {card}")

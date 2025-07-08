@@ -1,5 +1,5 @@
-import Player
-import Enemy
+from Player import Player, turn
+from Enemy import Enemy, attack
 import os
 import Utility_Function
 from Card import OffSpell, DefenseSpell, Potion, Weapon
@@ -16,15 +16,15 @@ playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
 enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
 while True:
     while len(player.hand) < 5:
-        Utility_Function.draw_card(playerdeck)
+        player.hand.append(Utility_Function.draw_card(playerdeck))
     
     while len(enemy.hand) < 5:
-        Utility_Function.draw_card(enemydeck)
+        enemy.hand.append(Utility_Function.draw_card(enemydeck))
         
-    player.turn(player.hand[0])  # in a real game, you would choose a card from the player's hand
+    player.turn(player.hand[0], enemy)#add chosen card from player input
+    player.hand.pop(0)  # Remove the played card from hand	
     
     enemy.attack(player)
-    player.attack(enemy)
     if enemy.hp <= 0:
         print("You defeated the enemy!")
         break
