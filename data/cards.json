@@ -68,7 +68,7 @@
                 "name": "Basic Sword",
                 "type": "weapon",
                 "subtype": "sword",
-                "dmg_amp": 1.1,
+                "dmg_amp": 1.1, 
                 "cost": 2,
                 "desc": "Description for Basic Sword"
             },
