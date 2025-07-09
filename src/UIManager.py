@@ -1,326 +1,258 @@
 import pygame as pg
 import pygame_widgets as pw
+import pygame_gui as pygui
 from pygame._sdl2 import Window
 from pygame_widgets.button import Button
 
+# PYGAME_GUI
 
-class UIManager():
+class UIManager:
     def __init__(self):
-        """
-        Initialisiert pygame und setzt alle wichtigen Grundvariablen wie benötigt
-        """
         pg.init()
 
-        self.clock = pg.time.Clock()  # Clock damit der Loop nur 60x pro Sekunde ausgeführt wird
         info = pg.display.Info() 
-        self.width, self.height = info.current_w, info.current_h
-        self.win = pg.display.set_mode((self.width, self.height), pg.RESIZABLE) # Damit das Fenster Maximized werden kann
-        
-        # default Variablen
-        self.default_btn_dim = 75
-        self.default_fontsize = 12
-        self.fps = 60
-        self.margin = 20
+        self.size = (info.current_w, info.current_h)
+        self.window = pg.display.set_mode(self.size, pg.RESIZABLE)
+        # Python Card Game Daniel Angelo
+        pg.display.set_caption("PYCAGADAAN")
+
+        self.clock = pg.time.Clock()
+        self.manager = pygui.UIManager(self.size)
+
+        # Ressourcenwerte
         self.player_hp_value = 100
         self.enemy_hp_value = 100
         self.player_mana_value = 100
         self.enemy_mana_value = 100
-        self.player_mana_value = 100
-        self.enemy_mana_value = 100
-        self.playerhand = []
-        self.enemyhand = []
 
-        self.create_window()
-
-    def create_window(self):
-        """
-        Erstellt das Fenster der Appliaktion und listened nach Events die auftauchen
-        """
-        win = self.win
-        margin = 20
-
+        # Buttons erstellen
         self.create_buttons()
+        self.create_cards()
 
-        # HP BAR SETUP (als Attribute speichern, damit du sie anpassen kannst)
-        self.hpWidth = 150
-        self.player_hpHeight = 150
-        self.enemy_hpHeight = 150
-        self.manaWidth = 150
-        self.player_manaHeight = 150
-        self.enemy_manaHeight = 150
-        self.margin = margin
-
-        # GAME LOOP
-        running = True
-        while running:
-            events = pg.event.get()
-
-            for event in events:
-                if event.type == pg.QUIT: # Fenster schließen
-                    running = False
-                elif event.type == pg.VIDEORESIZE: # Fenstergröße ändern
-                    self.width, self.height = event.w, event.h
-                    self.win = pg.display.set_mode((self.width, self.height), pg.RESIZABLE)
-                    self.create_buttons()
-                    
-
-            # VISUALS
-            self.win.fill((120, 50, 75))
-
-            # BARS
-            # Spieler HP
-            player_hpX = self.width - self.hpWidth - self.margin
-            player_hpY = self.height - self.player_hpHeight - self.margin
-            player_fill_height = int((self.player_hp_value / 100) * self.player_hpHeight)
-            player_fill_y = player_hpY + (self.player_hpHeight - player_fill_height)
-            player_hp_border_rect = pg.Rect(player_hpX, player_hpY, self.hpWidth, self.player_hpHeight)
-            player_hp_fill_rect = pg.Rect(player_hpX, player_fill_y, self.hpWidth, player_fill_height)
-
-            # Gegner HP
-            enemy_hpX = self.margin
-            enemy_hpY = self.margin
-            enemy_fill_height = int((self.enemy_hp_value / 100) * self.enemy_hpHeight)
-            enemy_fill_y = enemy_hpY + (self.enemy_hpHeight - enemy_fill_height)
-            enemy_hp_border_rect = pg.Rect(enemy_hpX, enemy_hpY, self.hpWidth, self.enemy_hpHeight)
-            enemy_hp_fill_rect = pg.Rect(enemy_hpX, enemy_fill_y, self.hpWidth, enemy_fill_height)
-
-            # Spieler Mana
-            player_manaX = self.width - self.manaWidth - self.margin
-            player_manaY = self.height - self.player_manaHeight - self.margin - self.player_manaHeight
-            player_mana_fill_height = int((self.player_mana_value / 100) * self.player_manaHeight)
-            player_mana_fill_y = player_manaY + (self.player_manaHeight - player_mana_fill_height)
-            player_mana_border_rect = pg.Rect(player_manaX, player_manaY, self.manaWidth, self.player_manaHeight)
-            player_mana_fill_rect = pg.Rect(player_manaX, player_mana_fill_y, self.manaWidth, player_mana_fill_height)
-
-            # Gegner Mana
-            enemy_manaX = self.margin
-            enemy_manaY = self.margin + self.enemy_manaHeight
-            enemy_mana_fill_height = int((self.enemy_mana_value / 100) * self.enemy_manaHeight)
-            enemy_mana_fill_y = enemy_manaY + (self.enemy_manaHeight - enemy_mana_fill_height)
-            enemy_mana_border_rect = pg.Rect(enemy_manaX, enemy_manaY, self.manaWidth, self.enemy_manaHeight)
-            enemy_mana_fill_rect = pg.Rect(enemy_manaX, enemy_mana_fill_y, self.manaWidth, enemy_mana_fill_height)
-
-            # Render
-            pg.draw.rect(self.win, (255, 255, 255), player_hp_border_rect, width=3)
-            pg.draw.rect(self.win, (0, 200, 0), player_hp_fill_rect)
-            pg.draw.rect(self.win, (255, 255, 255), enemy_hp_border_rect, width=3)
-            pg.draw.rect(self.win, (0, 200, 0), enemy_hp_fill_rect)
-            pg.draw.rect(self.win, (255, 255, 255), player_mana_border_rect, width=3)
-            pg.draw.rect(self.win, (0, 0, 200), player_mana_fill_rect)
-            pg.draw.rect(self.win, (255, 255, 255), enemy_mana_border_rect, width=3)
-            pg.draw.rect(self.win, (0, 0, 200), enemy_mana_fill_rect)
-
-            # Refresh
-            pw.update(events)
-            pg.display.flip()
-            self.clock.tick(self.fps)
-
-        pg.quit()
+        self.running = True
+        self.main_loop()
 
     def create_buttons(self):
-        """
-        Erstellt alle Buttons die auf einem Spielfeld vorhanden sind und positioniert sie
-        """
-        margin = 20
-        self.playerhand.clear()
-        self.enemyhand.clear()
+        margin = 10
+        btn_width, btn_height = 150, 40
+        buttons_x = int(self.size[0] - btn_width - margin)
+        buttons_y = margin 
 
-        # UI BUTTONS
+        labels = [
+            ("LOSE HP (P)", lambda: self.set_ressource("hp", "player")),
+            ("FILL HP (P)", lambda: self.set_ressource("hp", "player", filling=True)),
+            ("LOSE HP (E)", lambda: self.set_ressource("hp", "enemy")),
+            ("FILL HP (E)", lambda: self.set_ressource("hp", "enemy", filling=True)),
+            ("LOSE MANA (P)", lambda: self.set_ressource("mana", "player")),
+            ("FILL MANA (P)", lambda: self.set_ressource("mana", "player", filling=True)),
+            ("LOSE MANA (E)", lambda: self.set_ressource("mana", "enemy")),
+            ("FILL MANA (E)", lambda: self.set_ressource("mana", "enemy", filling=True)),
+        ]
 
-        # SETTINGS BUTTON
-        settingsX = self.win.get_width() - self.default_btn_dim - margin
-        settingsY = margin
-        self.settingsBtn = Button(
-            self.win, settingsX, settingsY, self.default_btn_dim, self.default_btn_dim, text='SETTINGS',
-            fontSize=self.default_fontsize, margin=margin,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: print("Clicked SETTINGS")
-        )
+        self.buttons = []
+        for i, (text, callback) in enumerate(labels):
+            if i == 0:
+                buttons_x = int(self.size[0] - btn_width * 2 - margin * 2)
+            elif i % 2 == 0:
+                buttons_x = int(self.size[0] - btn_width * 2 - margin * 2)
+                buttons_y += int((btn_height + margin))
+            else:
+                buttons_x = int(self.size[0] - btn_width - margin)
 
-        # LOSE HP BUTTON
-        player_testHpX = self.win.get_width() - self.default_btn_dim - margin
-        player_testHpY = margin*2 + self.default_btn_dim
-        self.player_testHp = Button(
-            self.win, player_testHpX, player_testHpY, self.default_btn_dim, self.default_btn_dim, text='LOSE HP (P)',
-            fontSize=self.default_fontsize, margin=margin,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.set_ressource(ressource="hp", owner="player")
-        )
+            btn = pygui.elements.UIButton(
+                relative_rect=pg.Rect((buttons_x, buttons_y), (btn_width, btn_height)),
+                text=text,
+                manager=self.manager,
+                object_id=f"#btn_{i}"
+            )
+            self.buttons.append((btn, callback))
 
-        # FILL HP BUTTON
-        player_fillHpX = self.win.get_width() - self.default_btn_dim - margin
-        player_fillHpY = margin*3 + self.default_btn_dim*2
-        self.player_fillHp = Button(
-            self.win, player_fillHpX, player_fillHpY, self.default_btn_dim, self.default_btn_dim, text='FILL HP (P)',
-            fontSize=self.default_fontsize, margin=margin,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.set_ressource(ressource="hp", owner="player", filling=True)
-        )
-
-        # LOSE ENEMY HP BUTTON
-        enemy_testHpX = self.win.get_width() - self.default_btn_dim*2 - margin*2
-        enemy_testHpY = margin*2 + self.default_btn_dim
-        self.enemy_testHp = Button(
-            self.win, enemy_testHpX, enemy_testHpY, self.default_btn_dim, self.default_btn_dim, text='LOSE HP (E)',
-            fontSize=self.default_fontsize, margin=margin,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.set_ressource(ressource="hp", owner="enemy")
-        )
-
-        # FILL ENEMY HP BUTTON
-        enemy_fillHpX = self.win.get_width() - self.default_btn_dim*2 - margin*2
-        enemy_fillHpY = margin*3 + self.default_btn_dim*2
-        self.enemy_fillHp = Button(
-            self.win, enemy_fillHpX, enemy_fillHpY, self.default_btn_dim, self.default_btn_dim, text='FILL HP (E)',
-            fontSize=self.default_fontsize, margin=margin,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.set_ressource(ressource="hp", owner="enemy", filling=True)
-        )
-
-        # LOSE MANA BUTTON 
-        player_testManaX = self.win.get_width() - self.default_btn_dim - margin
-        player_testManaY = margin*4 + self.default_btn_dim*3
-        self.player_testMana = Button(
-            self.win, player_testManaX, player_testManaY, self.default_btn_dim, self.default_btn_dim, text='LOSE MANA (P)',
-            fontSize=self.default_fontsize, margin=margin,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.set_ressource(ressource="mana", owner="player")
-        )
-
-        # FILL MANA BUTTON
-        player_fillManaX = self.win.get_width() - self.default_btn_dim - margin
-        player_fillManaY = margin*5 + self.default_btn_dim*4
-        self.player_fillMana = Button(
-            self.win, player_fillManaX, player_fillManaY, self.default_btn_dim, self.default_btn_dim, text='FILL MANA (P)',
-            fontSize=self.default_fontsize, margin=margin,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.set_ressource(ressource="mana", owner="player", filling=True)
-        )
-
-        # LOSE ENEMY MANA BUTTON
-        enemy_testManaX = self.win.get_width() - self.default_btn_dim*2 - margin*2
-        enemy_testManaY = margin*4 + self.default_btn_dim*3
-        self.enemy_testMana = Button(
-            self.win, enemy_testManaX, enemy_testManaY, self.default_btn_dim, self.default_btn_dim, text='LOSE MANA (E)',
-            fontSize=self.default_fontsize, margin=margin,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.set_ressource(ressource="mana", owner="enemy")
-        )
-
-        # FILL ENEMY MANA BUTTON
-        enemy_fillManaX = self.win.get_width() - self.default_btn_dim*2 - margin*2
-        enemy_fillManaY = margin*5 + self.default_btn_dim*4
-        self.enemy_fillMana = Button(
-            self.win, enemy_fillManaX, enemy_fillManaY, self.default_btn_dim, self.default_btn_dim, text='FILL MANA (E)',
-            fontSize=self.default_fontsize, margin=margin,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: self.set_ressource(ressource="mana", owner="enemy", filling=True)
-        )
-
-        # HANDS
-        # UTIL
+    def create_cards(self):
+        margin = 10
         handsize = 5
-        card_width = self.width / 10
-        card_height = self.width / 8
-        total_hand_width = handsize * card_width + (handsize - 1) * margin
-        card_xanchor = self.width / 2 - total_hand_width / 2
-        handoffset_x = card_width + margin
+        w_card, h_card = int(self.size[0] / 10), int(self.size[1] / 4)
+        total_hand_width = int(handsize * w_card + (handsize-1) * margin)
+        buttons_x = int(self.size[0] / 2 - total_hand_width / 2)
+        buttons_y = margin
 
-        # PLAYER
-        card_yanchor = self.height - card_height - margin
-        for i in range(handsize):
-            self.playerhand.append(Button(self.win, card_xanchor + (handoffset_x * i), card_yanchor, card_width, card_height, text=f"EMPTY {i}", 
-                                     fontSize=20, margin=margin, inactiveColour=(255, 0, 0), pressedColour=(0, 255, 0), 
-                                     radius=20, onClick=lambda i=i: print(f"CLICKED PLAYER CARD {i}")))
+        self.p_handcards = []
+        self.e_handcards = []
+        for i in range(handsize * 2):
+            # RESET
+            if i == handsize:
+                buttons_y = self.size[1] - margin - h_card
+                buttons_x = self.size[0] / 2 - total_hand_width / 2
+            
+            if i < handsize: # ENEMY
+                btn = pygui.elements.UIButton(
+                    relative_rect=pg.Rect((buttons_x, buttons_y), (w_card, h_card)),
+                    text=f"E CARD {i}",
+                    manager=self.manager,
+                    object_id=f"#e_hand_{i}"
+                )
+                buttons_x += w_card + margin
+                self.e_handcards.append(btn)
+            else:
+                p_card_num = i - handsize
+                btn = pygui.elements.UIButton(
+                    relative_rect=pg.Rect((buttons_x, buttons_y), (w_card, h_card)),
+                    text=f"P CARD {p_card_num}",
+                    manager=self.manager,
+                    object_id=f"#p_hand_{p_card_num}"
+                )
+                buttons_x += w_card + margin
+                self.p_handcards.append(btn)
         
-        # ENEMY
-        card_yanchor = self.margin
-        for i in range(handsize):
-            self.enemyhand.append(Button(self.win, card_xanchor + (handoffset_x * i), card_yanchor, card_width, card_height, text=f"EMPTY {i}", 
-                                     fontSize=20, margin=margin, inactiveColour=(255, 0, 0), pressedColour=(0, 255, 0), 
-                                     radius=20, onClick=lambda i=i: print(f"CLICKED ENEMY CARD {i}")))
+        self.player_combatfield = pygui.elements.UIButton(
+            relative_rect=pg.Rect(((int(self.size[0] / 2) - w_card - margin), int(self.size[1] / 2) - h_card / 2), (w_card, h_card)),
+                                text=f"P COMBAT",
+                                manager=self.manager,
+                                object_id=f"#p_combatfield"
+        )
+        self.enemy_combatfield = pygui.elements.UIButton(
+            relative_rect=pg.Rect(((int(self.size[0] / 2) + margin), int(self.size[1] / 2) - h_card / 2), (w_card, h_card)),
+                                text=f"E COMBAT",
+                                manager=self.manager,
+                                object_id=f"#e_combatfield"
+        )
 
-        self.player_combatfield = Button(self.win, (self.width / 2 - card_width / 2) - card_width / 2 - margin, self.height / 2 - card_height / 2, card_width, card_height, text=f"P COMBAT",
-                                    fontSize=20, margin=margin, inactiveColour=(255, 0, 0), pressedColour=(0, 255, 0),
-                                    radius=20, onClick=lambda: print(f"CLICKED PLAYER COMBAT FIELD"))
-        
-        self.enemy_combatfield = Button(self.win, (self.width / 2 - card_width / 2) + card_width / 2 + margin, self.height / 2 - card_height / 2, card_width, card_height, text=f"E COMBAT",
-                                    fontSize=20, margin=margin, inactiveColour=(255, 0, 0), pressedColour=(0, 255, 0),
-                                    radius=20, onClick=lambda: print(f"CLICKED ENEMY COMBAT FIELD"))
-        
+
+    def draw_bars(self):
+        bar_width = 150
+        bar_height = 200
+        margin = 20
+
+        # Player HP
+        x = self.size[0] - bar_width - margin
+        y = self.size[1] - bar_height - margin
+        self.draw_bar(x, y, bar_width, bar_height, self.player_hp_value, (0, 200, 0), "HP (P)")
+
+        # Enemy HP
+        x = margin
+        y = margin
+        self.draw_bar(x, y, bar_width, bar_height, self.enemy_hp_value, (0, 200, 0), "HP (E)")
+
+        # Player Mana
+        x = self.size[0] - bar_width - margin
+        y = self.size[1] - (bar_height * 2) - (margin * 2)
+        self.draw_bar(x, y, bar_width, bar_height, self.player_mana_value, (0, 0, 200), "MANA (P)")
+
+        # Enemy Mana
+        x = margin
+        y = margin + bar_height + margin
+        self.draw_bar(x, y, bar_width, bar_height, self.enemy_mana_value, (0, 0, 200), "MANA (E)")
+
+    def draw_bar(self, x, y, w, h, value, color, label):
+        pg.draw.rect(self.window, (255, 255, 255), (x, y, w, h), 2)
+        fill_height = int((value / 100) * h)
+        fill_y = y + (h - fill_height)
+        pg.draw.rect(self.window, color, (x, fill_y, w, fill_height))
+        font = pg.font.SysFont(None, 20)
+        text_surf = font.render(label, True, (255, 255, 255))
+        self.window.blit(text_surf, (x + (w - text_surf.get_width()) // 2, y - 20))
 
     def set_ressource(self, ressource, owner, loseVal=5, fillVal=100, filling=False):
-        if owner == "player": # Player?
-            if ressource == "hp": # HP?
+        if owner == "player":
+            if ressource == "hp":
                 value = self.player_hp_value
-                if filling == False: # Addieren?
-                    print(f"HP (P): {value} - {loseVal} = {value-5}")
+                if not filling:
+                    print(f"HP (P): {value} - {loseVal} = {value - 5}")
                     value -= loseVal
-                    if value < 0: # Leer?
+                    if value < 0:
                         print(f"HP (P): ! REACHED ZERO")
                         value = 0
                     self.player_hp_value = value
-                else: # Subtrahieren?
+                else:
                     value += fillVal
-                    if value > 100: # Voll?
+                    if value > 100:
                         value = 100
-                    print(f"HP (P): RESET TO 100 (FULL)")
+                    print("HP (P): RESET TO 100 (FULL)")
                     self.player_hp_value = value
-            elif ressource == "mana": # Mana?
+            elif ressource == "mana":
                 value = self.player_mana_value
-                if filling == False: # Addieren?
-                    print(f"MANA (P): {value} - {loseVal} = {value-5}")
+                if not filling:
+                    print(f"MANA (P): {value} - {loseVal} = {value - 5}")
                     value -= loseVal
-                    if value < 0: # Leer?
-                        print(f"MANA (P): ! REACHED ZERO")
+                    if value < 0:
+                        print("MANA (P): ! REACHED ZERO")
                         value = 0
                     self.player_mana_value = value
-                else: # Subtrahieren?
+                else:
                     value += fillVal
-                    if value > 100: # Voll?
+                    if value > 100:
                         value = 100
-                    print(f"MANA (P): RESET TO 100 (FULL)")
+                    print("MANA (P): RESET TO 100 (FULL)")
                     self.player_mana_value = value
-        elif owner == "enemy": # Enemy ?
-            if ressource == "hp": # HP ?
+        elif owner == "enemy":
+            if ressource == "hp":
                 value = self.enemy_hp_value
-                if filling == False: # Addieren?
-                    print(f"HP (E): {value} - {loseVal} = {value-5}")
+                if not filling:
+                    print(f"HP (E): {value} - {loseVal} = {value - 5}")
                     value -= loseVal
-                    if value < 0: # Leer?
-                        print(f"HP (E): ! REACHED ZERO")
+                    if value < 0:
+                        print("HP (E): ! REACHED ZERO")
                         value = 0
                     self.enemy_hp_value = value
-                else: # Subtrahieren?
+                else:
                     value += fillVal
-                    if value > 100: # Voll?
+                    if value > 100:
                         value = 100
-                    print(f"HP (E): RESET TO 100 (FULL)")
+                    print("HP (E): RESET TO 100 (FULL)")
                     self.enemy_hp_value = value
-            elif ressource == "mana": # Mana?
+            elif ressource == "mana":
                 value = self.enemy_mana_value
-                if filling == False: # Addieren?
-                    print(f"MANA (E): {value} - {loseVal} = {value-5}")
+                if not filling:
+                    print(f"MANA (E): {value} - {loseVal} = {value - 5}")
                     value -= loseVal
-                    if value < 0: # Leer?
-                        print(f"MANA (E): ! REACHED ZERO")
+                    if value < 0:
+                        print("MANA (E): ! REACHED ZERO")
                         value = 0
                     self.enemy_mana_value = value
-                else: # Subtrahieren?
+                else:
                     value += fillVal
-                    if value > 100: # Voll?
+                    if value > 100:
                         value = 100
-                    print(f"MANA (E): RESET TO 100 (FULL)")
+                    print("MANA (E): RESET TO 100 (FULL)")
                     self.enemy_mana_value = value
-        else: # INVALID OWNER?
-            print(f"INVALID OWNER FOR LOSE_HP")
-            return None
+        else:
+            print("INVALID OWNER FOR LOSE_HP")
+
+    def main_loop(self):
+        while self.running:
+            time_delta = self.clock.tick(60) / 1000.0 # FPS LIMIT
+            for event in pg.event.get():
+                if event.type == pg.QUIT: # QUIT APP
+                    self.running = False
+                elif event.type == pg.VIDEORESIZE: # WINDOW RESIZING
+                    self.size = event.size
+                    self.window = pg.display.set_mode(self.size, pg.RESIZABLE)
+                    self.manager.set_window_resolution(self.size)
+                    self.manager.clear_and_reset()
+                    self.create_buttons()
+                    self.create_cards()
+                elif event.type == pygui.UI_BUTTON_PRESSED: # BUTTON EVENT HANDLING
+                    for btn, callback in self.buttons:
+                        if event.ui_element == btn:
+                            callback()
+                    if event.ui_object_id.startswith("#e_hand_"):
+                        print(f"CLICKED E CARD {event.ui_object_id}")
+                    elif event.ui_object_id.startswith("#p_hand_"):
+                        print(f"CLICKED P CARD {event.ui_object_id}")
+                    elif event.ui_object_id.startswith("#e_combatfield"):
+                        print(f"CLICKED E COMBATFIELD {event.ui_object_id}")
+                    elif event.ui_object_id.startswith("#p_combatfield"):
+                        print(f"CLICKED P COMBATFIELD {event.ui_object_id}")
+
+
+                self.manager.process_events(event)
+                self.manager.update(time_delta)
+                self.window.fill((30, 30, 30))
+                self.draw_bars()
+                self.manager.draw_ui(self.window)
+
+            pg.display.update()
+
+
+if __name__ == "__main__":
+    UIManager()
+
