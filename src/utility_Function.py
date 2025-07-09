@@ -7,35 +7,34 @@ import json
 def play(player: Player, card: Card, enemy: Enemy):
     print(f"Playing card: {card}")
     
+    #Player Turn Logic
     if player.mana >= card.cost:
         if isinstance(card, OffSpell):    
             print(f"Dealing {card.damage} damage with {card.name}.")
             enemy.hp -= card.damage
-            player.mana -= card.cost
-            return
+            player.mana -= card.cost           
         elif isinstance(card, DefenseSpell):
             player.hp += card.heal
             print(f"Healing {card.heal} HP with {card.name}.")
-            player.mana -= card.cost
-            return
+            player.mana -= card.cost          
         elif isinstance(card, Potion):
             player.mana += card.manaIncrease
             player.hp += card.heal
             print(f"Healing {card.heal} HP and increasing mana by {card.manaIncrease} with {card.name}.")
-            player.mana -= card.cost
-            return
+            player.mana -= card.cost    
         elif isinstance(card, Weapon):
             player.equipmentmultiplier = card.damagemultiplier
             player.damage = 3 * player.equipmentmultiplier
-            player.mana -= card.cost
-            return
+            player.mana -= card.cost            
         else:
-            print(f"Unknown card type: {card.__class__.__name__}")
-        return
+            print(f"Unknown card type: {card.__class__.__name__}")   
     else:
         print (f"Not enogh mana to play {card.name}. Current mana: {player.mana}, card cost: {card.cost}")
         return
-
+    #Enemy Turn Logic
+    if enemy.hp > 0:
+        enemy.attack(player)
+        
 def load_Deck(jsonFilePath: str) -> List[Card]:
 
     with open(jsonFilePath, 'r') as file:

@@ -1,4 +1,4 @@
-from Player import Player, turn
+from Player import Player
 from Enemy import Enemy, attack
 import os
 import Utility_Function
@@ -26,11 +26,10 @@ while True:
         if (enemydeck == []):
             print("The enemy has no more cards in their deck!")
             break
-        
-    player.turn(player.hand[0], enemy)#add chosen card from player input
-    player.hand.pop(0)  # Remove the played card from hand	
+    chosenCard = player.hand[0]  # TODO: Chosen card from UI implementation
+    Utility_Function.play(player, chosenCard, enemy)
+    player.hand.pop(chosenCard)  # Remove the played card from hand	
     
-    enemy.attack(player)
     if enemy.hp <= 0:
         print("You defeated the enemy!")
         break
@@ -39,4 +38,3 @@ while True:
         break
     print(f"Enemy HP: {enemy.hp}, Player HP: {player.hp}")
     
-    # Joe Biden
