@@ -6,25 +6,35 @@ import json
 
 def play(player: Player, card: Card, enemy: Enemy):
     print(f"Playing card: {card}")
-
-    if isinstance(card, OffSpell):
-        print(f"Dealing {card.damage} damage with {card.name}.")
-        enemy.hp -= card.damage
+    
+    if player.mana >= card.cost:
+        if isinstance(card, OffSpell):    
+            print(f"Dealing {card.damage} damage with {card.name}.")
+            enemy.hp -= card.damage
+            player.mana -= card.cost
+            return
+        elif isinstance(card, DefenseSpell):
+            player.hp += card.heal
+            print(f"Healing {card.heal} HP with {card.name}.")
+            player.mana -= card.cost
+            return
+        elif isinstance(card, Potion):
+            player.mana += card.manaIncrease
+            player.hp += card.heal
+            print(f"Healing {card.heal} HP and increasing mana by {card.manaIncrease} with {card.name}.")
+            player.mana -= card.cost
+            return
+        elif isinstance(card, Weapon):
+            player.equipmentmultiplier = card.damagemultiplier
+            player.damage = 3 * player.equipmentmultiplier
+            player.mana -= card.cost
+            return
+        else:
+            print(f"Unknown card type: {card.__class__.__name__}")
         return
-    elif isinstance(card, DefenseSpell):
-        player.hp += card.heal
-        print(f"Healing {card.heal} HP with {card.name}.")
+    else:
+        print (f"Not enogh mana to play {card.name}. Current mana: {player.mana}, card cost: {card.cost}")
         return
-    elif isinstance(card, Potion):
-        player.mana += card.manaIncrease
-        player.hp += card.heal
-        print(f"Healing {card.heal} HP and increasing mana by {card.manaIncrease} with {card.name}.")
-        return
-    elif isinstance(card, Weapon):
-        player.equipmentdmg = card.damage
-        print(f"Increasing equipment damage by {card.damage} with {card.name}.")
-        return
-    return
 
 def load_Deck(jsonFilePath: str) -> List[Card]:
 
@@ -70,10 +80,10 @@ def load_Deck(jsonFilePath: str) -> List[Card]:
                 name=weapon['name'],
                 cost=weapon['cost'],
                 description=weapon['desc'],
-                damage=int(weapon['dmg_amp'] * 10)  # or scale as needed
+                damagemultiplier=weapon['dmg_amp']
             ))
 
-    # Load attacks as OffSpells (same logic as offensive spells)
+    # Load attacks as OffSpells
     for entry in data.get('attacks', []):
         for _, attack in entry.items():
             deck.append(OffSpell(

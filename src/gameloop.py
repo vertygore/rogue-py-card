@@ -17,9 +17,15 @@ enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
 while True:
     while len(player.hand) < 5:
         player.hand.append(Utility_Function.draw_card(playerdeck))
+        if (playerdeck == []):
+            print("You have no more cards in your deck!")
+            break
     
     while len(enemy.hand) < 5:
         enemy.hand.append(Utility_Function.draw_card(enemydeck))
+        if (enemydeck == []):
+            print("The enemy has no more cards in their deck!")
+            break
         
     player.turn(player.hand[0], enemy)#add chosen card from player input
     player.hand.pop(0)  # Remove the played card from hand	

@@ -29,7 +29,7 @@ class Potion(Card):
         self.manaIncrease = manaIncrease
 
 class Weapon(Card):
-    def __init__(self, name: str, cost: int, description: str, damage: int):
+    def __init__(self, name: str, cost: int, description: str, damagemultiplier: float):
         super().__init__(name, cost, description)
-        self.damage = damage
+        self.damagemultiplier = damagemultiplier
         
