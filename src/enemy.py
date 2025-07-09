@@ -1,19 +1,55 @@
 from typing import List, Optional
-from Card import Card
+from Card import Card, OffSpell, Weapon, Potion, DefenseSpell
 from Player import Player
 
 
 class Enemy:
-    def __init__(self, name: str, hp: int, damage: int, description: str, hand:Optional[List[Card]] = None):
+    def __init__(self, hp: int, equipmentmultiplier: Optional[float] = 1.0, hand: Optional[List[Card]] = None, mana: int = 1, name: str = "Enemy", description: str = "A fearsome foe"):
+        self.description = description
+        self.name = name
+        self.equipmentmultiplier = equipmentmultiplier if equipmentmultiplier is not None else 1.0
+        self.hp = hp
+        self.mana = mana 
         self.hand = hand if hand is not None else []
         self.name = name
-        self.hp = hp
-        self.damage = damage
-        self.description = description
+        
+    def attack(self, player: Player) -> Card:
+        best_weapon = None
+        best_heal = None
+        best_attack = None
+        
+        for card in self.hand:
+            if self.mana >= card.cost:
+                # Check for Mana Potion
+                if isinstance(card, Potion) and card.manaIncrease > 0:
+                    return card
+                # Check for potential lethal cards
+                elif isinstance(card, (OffSpell, Potion)) :
+                    if (player.hp - (self.equipmentmultiplier * card.damage) <= 0):
+                        return card
+                    # Save best offensive spell
+                    if self.mana >= card.cost:
+                        if best_attack is None or card.damage > best_attack.damage:
+                            best_attack = card
+                # Check for best Weapon        
+                elif isinstance(card, Weapon):
+                    if card.damagemultiplier > self.equipmentmultiplier:
+                        best_weapon = card
+                elif isinstance(card, (Potion, DefenseSpell)):
+                    if self.hp < 10:
+                        best_heal = card
+                
+        # Priority order
+        if best_heal:
+            return best_heal
+        if best_weapon:
+            return best_weapon
+        if best_attack:
+            return best_attack
+        else:
+            return None
+             
 
-    def attack(self, player: Player):
-        player.hp -= self.attack
-        print(f"{self.name} attacks for {self.attack} damage! Player HP: {player.hp}")
-    def __str__(self):
-
-        return f"{self.name} (HP: {self.hp}, Attack: {self.attack}) - {self.description}"
+        
+        
+                
