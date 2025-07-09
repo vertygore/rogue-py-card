@@ -3,6 +3,7 @@ import pygame_widgets as pw
 from pygame._sdl2 import Window
 from pygame_widgets.button import Button
 
+
 class UIManager():
     def __init__(self):
         """
@@ -15,7 +16,7 @@ class UIManager():
         self.width, self.height = info.current_w, info.current_h
         self.win = pg.display.set_mode((self.width, self.height), pg.RESIZABLE) # Damit das Fenster Maximized werden kann
         
-        # default vars
+        # default Variablen
         self.default_btn_dim = 75
         self.default_fontsize = 12
         self.fps = 60
@@ -124,13 +125,13 @@ class UIManager():
         self.playerhand.clear()
         self.enemyhand.clear()
 
+        # UI BUTTONS
+
         # SETTINGS BUTTON
-        settingsWidth = self.default_btn_dim
-        settingsHeight = self.default_btn_dim
-        settingsX = self.win.get_width() - settingsWidth - margin
+        settingsX = self.win.get_width() - self.default_btn_dim - margin
         settingsY = margin
         self.settingsBtn = Button(
-            self.win, settingsX, settingsY, settingsWidth, settingsHeight, text='SETTINGS',
+            self.win, settingsX, settingsY, self.default_btn_dim, self.default_btn_dim, text='SETTINGS',
             fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
@@ -138,12 +139,10 @@ class UIManager():
         )
 
         # LOSE HP BUTTON
-        player_testHpWidth = self.default_btn_dim 
-        player_testHpHeight = self.default_btn_dim 
-        player_testHpX = self.win.get_width() - player_testHpWidth - margin
+        player_testHpX = self.win.get_width() - self.default_btn_dim - margin
         player_testHpY = margin*2 + self.default_btn_dim
         self.player_testHp = Button(
-            self.win, player_testHpX, player_testHpY, player_testHpWidth, player_testHpHeight, text='LOSE HP (P)',
+            self.win, player_testHpX, player_testHpY, self.default_btn_dim, self.default_btn_dim, text='LOSE HP (P)',
             fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
@@ -151,12 +150,10 @@ class UIManager():
         )
 
         # FILL HP BUTTON
-        player_fillHpWidth = self.default_btn_dim
-        player_fillHpHeight = self.default_btn_dim
-        player_fillHpX = self.win.get_width() - player_fillHpWidth - margin
+        player_fillHpX = self.win.get_width() - self.default_btn_dim - margin
         player_fillHpY = margin*3 + self.default_btn_dim*2
         self.player_fillHp = Button(
-            self.win, player_fillHpX, player_fillHpY, player_fillHpWidth, player_fillHpHeight, text='FILL HP (P)',
+            self.win, player_fillHpX, player_fillHpY, self.default_btn_dim, self.default_btn_dim, text='FILL HP (P)',
             fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
@@ -164,12 +161,10 @@ class UIManager():
         )
 
         # LOSE ENEMY HP BUTTON
-        enemy_testHpWidth = self.default_btn_dim
-        enemy_testHpHeight = self.default_btn_dim
-        enemy_testHpX = self.win.get_width() - enemy_testHpWidth*2 - margin*2
+        enemy_testHpX = self.win.get_width() - self.default_btn_dim*2 - margin*2
         enemy_testHpY = margin*2 + self.default_btn_dim
         self.enemy_testHp = Button(
-            self.win, enemy_testHpX, enemy_testHpY, enemy_testHpWidth, enemy_testHpHeight, text='LOSE HP (E)',
+            self.win, enemy_testHpX, enemy_testHpY, self.default_btn_dim, self.default_btn_dim, text='LOSE HP (E)',
             fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
@@ -177,25 +172,21 @@ class UIManager():
         )
 
         # FILL ENEMY HP BUTTON
-        enemy_fillHpWidth = self.default_btn_dim
-        enemy_fillHpHeight = self.default_btn_dim
-        enemy_fillHpX = self.win.get_width() - enemy_fillHpWidth*2 - margin*2
+        enemy_fillHpX = self.win.get_width() - self.default_btn_dim*2 - margin*2
         enemy_fillHpY = margin*3 + self.default_btn_dim*2
         self.enemy_fillHp = Button(
-            self.win, enemy_fillHpX, enemy_fillHpY, enemy_fillHpWidth, enemy_fillHpHeight, text='FILL HP (E)',
+            self.win, enemy_fillHpX, enemy_fillHpY, self.default_btn_dim, self.default_btn_dim, text='FILL HP (E)',
             fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
             onClick=lambda: self.set_ressource(ressource="hp", owner="enemy", filling=True)
         )
 
-        # LOSE MANA BUTTON
-        player_testManaWidth = self.default_btn_dim 
-        player_testManaHeight = self.default_btn_dim 
-        player_testManaX = self.win.get_width() - player_testManaWidth - margin
+        # LOSE MANA BUTTON 
+        player_testManaX = self.win.get_width() - self.default_btn_dim - margin
         player_testManaY = margin*4 + self.default_btn_dim*3
         self.player_testMana = Button(
-            self.win, player_testManaX, player_testManaY, player_testManaWidth, player_testManaHeight, text='LOSE MANA (P)',
+            self.win, player_testManaX, player_testManaY, self.default_btn_dim, self.default_btn_dim, text='LOSE MANA (P)',
             fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
@@ -203,12 +194,10 @@ class UIManager():
         )
 
         # FILL MANA BUTTON
-        player_fillManaWidth = self.default_btn_dim
-        player_fillManaHeight = self.default_btn_dim
-        player_fillManaX = self.win.get_width() - player_fillManaWidth - margin
+        player_fillManaX = self.win.get_width() - self.default_btn_dim - margin
         player_fillManaY = margin*5 + self.default_btn_dim*4
         self.player_fillMana = Button(
-            self.win, player_fillManaX, player_fillManaY, player_fillManaWidth, player_fillManaHeight, text='FILL MANA (P)',
+            self.win, player_fillManaX, player_fillManaY, self.default_btn_dim, self.default_btn_dim, text='FILL MANA (P)',
             fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
@@ -216,12 +205,10 @@ class UIManager():
         )
 
         # LOSE ENEMY MANA BUTTON
-        enemy_testManaWidth = self.default_btn_dim
-        enemy_testManaHeight = self.default_btn_dim
-        enemy_testManaX = self.win.get_width() - enemy_testManaWidth*2 - margin*2
+        enemy_testManaX = self.win.get_width() - self.default_btn_dim*2 - margin*2
         enemy_testManaY = margin*4 + self.default_btn_dim*3
         self.enemy_testMana = Button(
-            self.win, enemy_testManaX, enemy_testManaY, enemy_testManaWidth, enemy_testManaHeight, text='LOSE MANA (E)',
+            self.win, enemy_testManaX, enemy_testManaY, self.default_btn_dim, self.default_btn_dim, text='LOSE MANA (E)',
             fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
@@ -229,12 +216,10 @@ class UIManager():
         )
 
         # FILL ENEMY MANA BUTTON
-        enemy_fillManaWidth = self.default_btn_dim
-        enemy_fillManaHeight = self.default_btn_dim
-        enemy_fillManaX = self.win.get_width() - enemy_fillManaWidth*2 - margin*2
+        enemy_fillManaX = self.win.get_width() - self.default_btn_dim*2 - margin*2
         enemy_fillManaY = margin*5 + self.default_btn_dim*4
         self.enemy_fillMana = Button(
-            self.win, enemy_fillManaX, enemy_fillManaY, enemy_fillManaWidth, enemy_fillManaHeight, text='FILL MANA (E)',
+            self.win, enemy_fillManaX, enemy_fillManaY, self.default_btn_dim, self.default_btn_dim, text='FILL MANA (E)',
             fontSize=self.default_fontsize, margin=margin,
             inactiveColour=(255, 0, 0),
             pressedColour=(0, 255, 0), radius=20,
