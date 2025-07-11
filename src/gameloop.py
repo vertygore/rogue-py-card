@@ -17,14 +17,26 @@ class GameLoop():
         #self.execute_turn()
 
 
-    # TODO: RETURN ODER YIELD: Welche Karte wurde gezogen
+    
     def refill_hands(self, deletedCardIndex = None):
-        if deletedCardIndex is not None:
-            self.player.hand.insert(deletedCardIndex, Utility_Function.draw_card(self.playerdeck))
-        while len(self.player.hand) < 5 and self.playerdeck:
-            self.player.hand.append(Utility_Function.draw_card(self.playerdeck))
+        drawn_Cards = []
 
-            if not self.playerdeck:
+        if deletedCardIndex is not None:
+            new_card = Utility_Function.draw_card(self.playerdeck)
+            if new_card:
+                self.player.hand.insert(deletedCardIndex, new_card)
+                drawn_Cards.append({"index": deletedCardIndex, "card": new_card})
+            else:
+                print("You have no more cards in your deck!")
+
+        while len(self.player.hand) < 5 and self.playerdeck:
+            new_card = Utility_Function.draw_card(self.playerdeck)
+            if new_card:
+                insert_index = len(self.player.hand)
+                self.player.hand.append(new_card)
+                drawn_Cards.append({"index": insert_index, "card": new_card})
+
+            else:
                 print("You have no more cards in your deck!")
                 break
         
@@ -33,6 +45,8 @@ class GameLoop():
 
             if not self.enemydeck:
                 print("The enemy has no more cards in their deck!")
+
+        return drawn_Cards
 
     def execute_turn(self, chosenCardIndex:int):
         if not self.player.hand:
@@ -43,10 +57,15 @@ class GameLoop():
             return
         
         Utility_Function.play(self.player,  self.player.hand[chosenCardIndex], self.enemy)
-        self.player.hand[chosenCardIndex] = None  # Remove the played card from hand
+        del self.player.hand[chosenCardIndex]  # Remove the played card from hand
 
         enemyCard = self.enemy.attack(self.player)
         self.enemy.hand.remove(enemyCard)
 
         # TODO: Return von refill_hands weiter geben
-        self.refill_hands(deletedCardIndex=chosenCardIndex)
+        drawn_cards = self.refill_hands(deletedCardIndex=chosenCardIndex)
+
+        return {
+            "enemycard": enemyCard,
+            "drawnCards": drawn_cards
+                }
