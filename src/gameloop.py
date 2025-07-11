@@ -47,4 +47,4 @@ class GameLoop():
         self.enemy.hand.remove(enemyCard)
 
         self.refill_hands()
-            
+            #comment
