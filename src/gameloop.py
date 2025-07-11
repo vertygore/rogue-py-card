@@ -24,7 +24,7 @@ class GameLoop():
         if deletedCardIndex is not None:
             new_card = Utility_Function.draw_card(self.playerdeck)
             if new_card:
-                self.player.hand.insert(deletedCardIndex, new_card)
+                self.player.hand[deletedCardIndex] = new_card
                 drawn_Cards.append({"index": deletedCardIndex, "card": new_card})
             else:
                 print("You have no more cards in your deck!")
@@ -57,7 +57,7 @@ class GameLoop():
             return
         
         Utility_Function.play(self.player,  self.player.hand[chosenCardIndex], self.enemy)
-        del self.player.hand[chosenCardIndex]  # Remove the played card from hand
+        self.player.hand[chosenCardIndex] = None  # Remove the played card from hand
 
         enemyCard = self.enemy.attack(self.player)
         self.enemy.hand.remove(enemyCard)
