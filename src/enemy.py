@@ -1,6 +1,6 @@
 from typing import List, Optional
-from Card import Card, OffSpell, Weapon, Potion, DefenseSpell
-from Player import Player
+from src.Card import Card, OffSpell, Weapon, Potion, DefenseSpell
+from src.Player import Player
 
 
 class Enemy:

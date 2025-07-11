@@ -1,4 +1,5 @@
 import src.UIManager as uim
+import src.Gameloop as gl
 
 """
 GAMENAME_TBD von Daniel Kern und Angelo Walburger
@@ -24,4 +25,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    gameloop = gl.GameLoop()
     ui = uim.UIManager()

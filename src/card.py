@@ -23,10 +23,11 @@ class DefenseSpell(Card):
         self.heal = heal
 
 class Potion(Card):
-    def __init__(self, name: str, cost: int, description: str, heal: int, manaIncrease: int):
+    def __init__(self, name: str, cost: int, description: str, heal: int, manaIncrease: int, damage: int):
         super().__init__(name, cost, description)
         self.heal = heal
         self.manaIncrease = manaIncrease
+        self.damage = damage
 
 class Weapon(Card):
     def __init__(self, name: str, cost: int, description: str, damagemultiplier: float):

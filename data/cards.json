@@ -52,7 +52,79 @@
                 "dmg": 0,
                 "desc": "Description for Small Mana Potion"
             },
-            "small_dmg_potion" : {
+            "small_dmg_potion1" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            },
+            "small_dmg_potion2" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            },
+            "small_dmg_potion3" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            },
+            "small_dmg_potion4" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            },
+            "small_dmg_potion5" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            },
+            "small_dmg_potion6" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            },
+            "small_dmg_potion7" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            },
+            "small_dmg_potion8" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            },
+            "small_dmg_potion9" : {
+                "name": "Small Damage Potion",
+                "type": "potion",
+                "hp_heal": 0,
+                "mana_heal" : 0,
+                "dmg": 10,
+                "desc": "Description for Small Damage Potion"
+            },
+            "small_dmg_potion10" : {
                 "name": "Small Damage Potion",
                 "type": "potion",
                 "hp_heal": 0,
