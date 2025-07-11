@@ -33,3 +33,4 @@ class Weapon(Card):
         super().__init__(name, cost, description)
         self.damagemultiplier = damagemultiplier
         
+#Comment
