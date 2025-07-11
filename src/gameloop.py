@@ -1,5 +1,5 @@
 from Player import Player
-from Enemy import Enemy, attack
+from Enemy import Enemy
 import os
 import Utility_Function
 from Card import OffSpell, DefenseSpell, Potion, Weapon
@@ -28,8 +28,10 @@ while True:
             break
     chosenCard = player.hand[0]  # TODO: Chosen card from UI implementation
     Utility_Function.play(player, chosenCard, enemy)
-    player.hand.pop(chosenCard)  # Remove the played card from hand	
-    
+    player.hand.remove(chosenCard)  # Remove the played card from hand	
+    enemyCard = enemy.attack(player)
+    enemy.hand.remove(enemyCard)  # Remove the played card from enemy's hand
+
     if enemy.hp <= 0:
         print("You defeated the enemy!")
         break
