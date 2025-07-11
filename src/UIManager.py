@@ -14,7 +14,6 @@ class UIManager:
 
         # Init Game Logic
         self.gameloop = GameLoop()
-        self.gameloop.refill_hands()
 
         # Init Display
         info = pg.display.Info() 
@@ -25,7 +24,7 @@ class UIManager:
         # Init UI Util
         self.manager = pygui.UIManager(self.size)
         self.gameStateManager = GameStateManager('mainmenu')
-        self.ingame = Ingame(self.window, self.gameStateManager, self.size, self.manager)
+        self.ingame = Ingame(self.window, self.gameStateManager, self.size, self.manager, self.gameloop)
         self.mainmenu = MainMenu(self.window, self.gameStateManager)
         self.states = {'mainmenu': self.mainmenu, 'ingame': self.ingame}
         self.clock = pg.time.Clock()
@@ -40,7 +39,6 @@ class UIManager:
         """
         while self.running:
             time_delta = self.clock.tick(60) / 1000.0 # Time Manipulation, Frame Limit
-
             # EVENT HANDLING
             for event in pg.event.get():
                 if event.type == pg.QUIT: # Quit App
@@ -67,6 +65,7 @@ class UIManager:
                         print(f"CLICKED E COMBATFIELD {event.ui_object_id}")
                     elif event.ui_object_id.startswith("#p_combatfield"): # Player Combatfield
                         print(f"CLICKED P COMBATFIELD {event.ui_object_id}")
+                        print(self.drawncards)
 
                 self.states[self.gameStateManager.get_state()].run() # State Update
 
@@ -83,12 +82,13 @@ class Ingame():
     """
     Handles the UI for Ingame
     """
-    def __init__(self, display, gameStateManager, size, manager):
+    def __init__(self, display, gameStateManager, size, manager, gameloop):
         # Util vars
         self.display = display
         self.gameStateManager = gameStateManager
         self.size = size
         self.manager = manager
+        self.gameloop = gameloop
         self.player_hp_value = 100
         self.enemy_hp_value = 100
         self.player_mana_value = 100
@@ -97,6 +97,7 @@ class Ingame():
         self.p_handcards = []
         self.e_handcards = []
         self.initialized = False
+
 
     def run(self):
         self.display.fill((30, 30, 30)) # BG Color
@@ -150,6 +151,9 @@ class Ingame():
         Creates all card buttons (enemy hand, player hand, enemy combatfield, player combatfield)
         and positions them
         """
+
+        self.gameloop.refill_hands()
+
         # Util var
         margin = 10
         handsize = 5
