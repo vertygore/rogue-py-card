@@ -14,11 +14,20 @@ class GameLoop():
         self.playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
         self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
         self.refill_hands()
-        self.execute_turn
+        self.execute_turn()
 
-    def refill_hands(self):
+    def refill_hands(self, deletedCardIndex = None):
+        if deletedCardIndex is not None:
+            self.player.hand.insert(deletedCardIndex, Utility_Function.draw_card(self.playerdeck))
         while len(self.player.hand) < 5 and self.playerdeck:
-            self.player.hand.append(Utility_Function.draw_card(self.playerdeck))
+            
+            if self.playerdeck:
+                # Draw a card from the player's deck
+                self.player.hand.append(Utility_Function.draw_card(self.playerdeck))
+            else:
+                print("You have no more cards in your deck!")
+                break
+        
 
         if not self.playerdeck:
             print("You have no more cards in your deck!")
@@ -38,13 +47,11 @@ class GameLoop():
             print("The enemy has no cards in their hand!")
             return
         
-        chosenCard = self.player.hand[chosenCardIndex]  
-        Utility_Function.play(self.player, chosenCard, self.enemy)
-        self.player.hand.remove(chosenCard)  # Remove the played card from hand
+        Utility_Function.play(self.player,  self.player.hand[chosenCardIndex], self.enemy)
+        del self.player.hand[chosenCardIndex]  # Remove the played card from hand
 
 
         enemyCard = self.enemy.attack(self.player)
         self.enemy.hand.remove(enemyCard)
 
-        self.refill_hands()
-            #comment
+        self.refill_hands(deltedCardIndex=chosenCardIndex)
