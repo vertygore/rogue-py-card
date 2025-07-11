@@ -17,13 +17,13 @@ enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
 while True:
     while len(player.hand) < 5:
         player.hand.append(Utility_Function.draw_card(playerdeck))
-        if (playerdeck == []):
+        if not playerdeck:
             print("You have no more cards in your deck!")
             break
     
     while len(enemy.hand) < 5:
         enemy.hand.append(Utility_Function.draw_card(enemydeck))
-        if (enemydeck == []):
+        if not enemydeck:
             print("The enemy has no more cards in their deck!")
             break
     chosenCard = player.hand[0]  # TODO: Chosen card from UI implementation
