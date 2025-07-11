@@ -10,7 +10,6 @@ class Utility_Function():
 
     def play(player: Player, card: Card, enemy: Enemy):
         print(f"Playing card: {card}")
-        
         #Player Turn Logic
         if player.mana >= card.cost:
             if isinstance(card, OffSpell):    
