@@ -9,10 +9,14 @@ JSON_PATH = os.path.join(BASE_DIR, '..', 'data', 'cards.json')
 
 class GameLoop():
     def __init__(self):
+        self.start_game_loop()
+
+    def start_game_loop(self):
         enemy = Enemy(name="Goblin", hp=30, description="Green and mean")
         player = Player(hp=100, equipmentmultiplier=1.0, hand=None, mana=1)
         playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
         enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
+
         while True:
             while len(player.hand) < 5 and playerdeck:
                 player.hand.append(Utility_Function.draw_card(playerdeck))
@@ -25,6 +29,7 @@ class GameLoop():
 
             if not enemydeck:
                 print("The enemy has no more cards in their deck!")
+            
             chosenCard = player.hand[0]  # TODO: Chosen card from UI implementation
             Utility_Function.play(player, chosenCard, enemy)
             player.hand.remove(chosenCard)  # Remove the played card from hand	
@@ -32,10 +37,10 @@ class GameLoop():
             if enemyCard and enemyCard in enemy.hand:
                 enemy.hand.remove(enemyCard)
                 
-            if enemy.hp <= 0:
+            if enemy.hp <= 0 or not enemydeck:
                 print("You defeated the enemy!")
                 break
-            if player.hp <= 0:
+            if player.hp <= 0 or not playerdeck:
                 print("You were defeated by the enemy!")
                 break
             print(f"Enemy HP: {enemy.hp}, Player HP: {player.hp}")
