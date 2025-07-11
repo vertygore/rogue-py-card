@@ -105,4 +105,4 @@ class Utility_Function():
         if not deck:
             raise ValueError("Deck is empty, cannot draw a card.")
         return deck.pop(0)  # Draw the top card from the deck
-
+     
