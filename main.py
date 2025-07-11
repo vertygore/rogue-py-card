@@ -25,5 +25,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    gameloop = gl.GameLoop()
     ui = uim.UIManager()
