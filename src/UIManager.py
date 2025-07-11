@@ -1,10 +1,13 @@
 import pygame as pg
 import pygame_gui as pygui
+from src.Gameloop import GameLoop
 from pygame._sdl2 import Window
 
 class UIManager:
     def __init__(self):
         pg.init()
+        self.gameloop = GameLoop()
+        self.gameloop.refill_hands()
 
         info = pg.display.Info() 
         self.size = (info.current_w, info.current_h)
@@ -36,7 +39,6 @@ class UIManager:
                     self.manager.clear_and_reset()
                     self.ingame.size = self.size
                     self.ingame.initialized = False
-
                 elif event.type == pygui.UI_BUTTON_PRESSED:
                     state = self.states[self.gameStateManager.get_state()]
                     if hasattr(state, 'buttons'):
@@ -47,6 +49,7 @@ class UIManager:
                         print(f"CLICKED E CARD {event.ui_object_id}")
                     elif event.ui_object_id.startswith("#p_hand_"):
                         print(f"CLICKED P CARD {event.ui_object_id}")
+                        self.gameloop.execute_turn(int(event.ui_object_id[-1]))
                     elif event.ui_object_id.startswith("#e_combatfield"):
                         print(f"CLICKED E COMBATFIELD {event.ui_object_id}")
                     elif event.ui_object_id.startswith("#p_combatfield"):
