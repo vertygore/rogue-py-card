@@ -1,40 +1,71 @@
-from Player import Player
-from Enemy import Enemy, attack
+from src.Utility_Function import Utility_Function
+from src.Player import Player
+from src.Enemy import Enemy
 import os
-import Utility_Function
-from Card import OffSpell, DefenseSpell, Potion, Weapon
 
 BASE_DIR = os.path.dirname(__file__)
 JSON_PATH = os.path.join(BASE_DIR, '..', 'data', 'cards.json')
 
-enemy = Enemy("Goblin", 30, 5, "Green and mean")
-player = Player(100, 0, 5)
-playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
-enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
 
-while True:
-    while len(player.hand) < 5:
-        player.hand.append(Utility_Function.draw_card(playerdeck))
-        if not playerdeck:
-            print("You have no more cards in your deck!")
-            break
+class GameLoop():
+    def __init__(self):
+        self.enemy = Enemy(name="Goblin", hp=30, description="Green and mean")
+        self.player = Player(hp=100, equipmentmultiplier=1.0, hand=[], mana=1)
+        self.playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
+        self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
+        self.refill_hands()
+        #self.execute_turn()
+
+
     
-    while len(enemy.hand) < 5:
-        enemy.hand.append(Utility_Function.draw_card(enemydeck))
-        if not enemydeck:
-            print("The enemy has no more cards in their deck!")
-            break
-    chosenCard = player.hand[0]  # TODO: Chosen card from UI implementation
-    Utility_Function.play(player, chosenCard, enemy)
-    player.hand.pop(chosenCard)  # Remove the played card from hand	
-    enemy_card = enemy.attack(player)
-    enemy.hand.remove(enemy_card)  # Remove the played card from enemy's hand
-    
-    if enemy.hp <= 0:
-        print("You defeated the enemy!")
-        break
-    if player.hp <= 0:
-        print("You were defeated by the enemy!")
-        break
-    print(f"Enemy HP: {enemy.hp}, Player HP: {player.hp}")
-    
+    def refill_hands(self, deletedCardIndex = None):
+        drawn_Cards = []
+
+        if deletedCardIndex is not None:
+            new_card = Utility_Function.draw_card(self.playerdeck)
+            if new_card:
+                self.player.hand[deletedCardIndex] = new_card
+                drawn_Cards.append({"index": deletedCardIndex, "card": new_card})
+            else:
+                print("You have no more cards in your deck!")
+
+        while len(self.player.hand) < 5 and self.playerdeck:
+            new_card = Utility_Function.draw_card(self.playerdeck)
+            if new_card:
+                insert_index = len(self.player.hand)
+                self.player.hand.append(new_card)
+                drawn_Cards.append({"index": insert_index, "card": new_card})
+
+            else:
+                print("You have no more cards in your deck!")
+                break
+        
+        while len(self.enemy.hand) < 5 and self.enemydeck:
+            self.enemy.hand.append(Utility_Function.draw_card(self.enemydeck))
+
+            if not self.enemydeck:
+                print("The enemy has no more cards in their deck!")
+
+        return drawn_Cards
+
+    def execute_turn(self, chosenCardIndex:int):
+        if not self.player.hand:
+            print("You have no cards in your hand!")
+            return
+        if not self.enemy.hand:
+            print("The enemy has no cards in their hand!")
+            return
+        
+        Utility_Function.play(self.player,  self.player.hand[chosenCardIndex], self.enemy)
+        self.player.hand[chosenCardIndex] = None  # Remove the played card from hand
+
+        enemyCard = self.enemy.attack(self.player)
+        self.enemy.hand.remove(enemyCard)
+
+        # TODO: Return von refill_hands weiter geben
+        drawn_cards = self.refill_hands(deletedCardIndex=chosenCardIndex)
+
+        return {
+            "enemycard": enemyCard,
+            "drawnCards": drawn_cards
+                }

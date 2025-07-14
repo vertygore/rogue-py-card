@@ -1,10 +1,10 @@
 from typing import List, Optional
-from Card import Card, OffSpell, Weapon, Potion, DefenseSpell
-from Player import Player
+from src.Card import Card, OffSpell, Weapon, Potion, DefenseSpell
+from src.Player import Player
 
 
 class Enemy:
-    def __init__(self, hp: int, equipmentmultiplier: Optional[float] = 1.0, hand: Optional[List[Card]] = None, mana: int = 1, name: str = "Enemy", description: str = "A fearsome foe"):
+    def __init__(self, hp: int, equipmentmultiplier: Optional[float] = 1.0, hand: Optional[List[Card]] = None, mana: int = 1, name: str = "Enemy", description: str = ""):
         self.description = description
         self.name = name
         self.equipmentmultiplier = equipmentmultiplier if equipmentmultiplier is not None else 1.0
@@ -41,10 +41,16 @@ class Enemy:
                 
         # Priority order
         if best_heal:
+            self.hp += best_heal.heal
+            self.mana -= best_heal.cost
             return best_heal
         if best_weapon:
+            self.equipmentmultiplier = best_weapon.damagemultiplier
+            self.mana -= best_weapon.cost
             return best_weapon
         if best_attack:
+            player.hp -= (self.equipmentmultiplier * best_attack.damage)
+            self.mana -= best_attack.cost
             return best_attack
         else:
             return None

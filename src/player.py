@@ -1,7 +1,5 @@
 from typing import List, Optional
-from Card import Card, OffSpell, Potion, DefenseSpell, Weapon
-from Utility_Function import play
-from Enemy import Enemy
+from src.Card import Card
 
 class Player:
     def __init__(self, hp: int, equipmentmultiplier: Optional[float] = 1.0, hand: Optional[List[Card]] = None, mana: int = 1):

@@ -3,10 +3,10 @@ X = DONE
 prio sortiert
 
 ANGELO:
-1 UI Plan ( )
-2 UI Grundstruktur ( )
-3 Menü mit Szenenwechsel ( )
-4 Sprites ( )
+1 UI Plan (X)
+2 UI Grundstruktur (X)
+3 Menü mit Szenenwechsel ( ) ! ERSTMAL VERWORFEFN
+4 Sprites ( ) ! ERSTMAL VERWORFEN
 5 Karten erstellen ( )
 
 DANIEL:
