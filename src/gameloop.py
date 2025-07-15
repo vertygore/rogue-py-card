@@ -25,6 +25,7 @@ class GameLoop():
             new_card = Utility_Function.draw_card(self.playerdeck)
             if new_card:
                 self.player.hand[deletedCardIndex] = new_card
+                type(new_card) 
                 drawn_Cards.append({"index": deletedCardIndex, "card": new_card})
             else:
                 print("You have no more cards in your deck!")
