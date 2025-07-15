@@ -60,12 +60,12 @@ class UIManager:
                         print(f"CLICKED E CARD {event.ui_object_id}")
                     elif event.ui_object_id.startswith("#p_hand_"): # Player Hand
                         print(f"CLICKED P CARD {event.ui_object_id}")
-                        self.gameloop.execute_turn(int(event.ui_object_id[-1]))
+                        self.drawncards = self.gameloop.execute_turn(int(event.ui_object_id[-1]))
+                        print(self.drawncards)
                     elif event.ui_object_id.startswith("#e_combatfield"): # Enemy Combatfield
                         print(f"CLICKED E COMBATFIELD {event.ui_object_id}")
                     elif event.ui_object_id.startswith("#p_combatfield"): # Player Combatfield
                         print(f"CLICKED P COMBATFIELD {event.ui_object_id}")
-                        print(self.drawncards)
 
                 self.states[self.gameStateManager.get_state()].run() # State Update
 
