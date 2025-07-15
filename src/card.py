@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-
+# This file defines the Card class and its subclasses for a card game.
 class Card(ABC):
     def __init__(self, name: str, cost: int, description: str):
         self.name = name
@@ -34,4 +34,3 @@ class Weapon(Card):
         super().__init__(name, cost, description)
         self.damagemultiplier = damagemultiplier
         
-#Comment

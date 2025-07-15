@@ -14,10 +14,11 @@ class Enemy:
         self.name = name
         
     def attack(self, player: Player) -> Card:
+        # Temp variables to store the best card options
         best_weapon = None
         best_heal = None
         best_attack = None
-        
+        # Check for the best card to play in the enemy's hand
         for card in self.hand:
             if self.mana >= card.cost:
                 # Check for Mana Potion
