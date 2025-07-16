@@ -1,7 +1,7 @@
 from typing import List
-from src.Card import Card, OffSpell, Potion, DefenseSpell, Weapon
-from src.Player import Player
-from src.Enemy import Enemy
+from Card import Card, OffSpell, Potion, DefenseSpell, Weapon
+from Player import Player
+from Enemy import Enemy
 import json
 
 class Utility_Function():

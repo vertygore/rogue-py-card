@@ -1,6 +1,6 @@
-from src.Utility_Function import Utility_Function
-from src.Player import Player
-from src.Enemy import Enemy
+from Utility_Function import Utility_Function
+from Player import Player
+from Enemy import Enemy
 import os
 
 BASE_DIR = os.path.dirname(__file__)

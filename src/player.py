@@ -1,5 +1,5 @@
 from typing import List, Optional
-from src.Card import Card
+from Card import Card
 
 class Player:
     def __init__(self, hp: int, equipmentmultiplier: Optional[float] = 1.0, hand: Optional[List[Card]] = None, mana: int = 1):
