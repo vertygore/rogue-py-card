@@ -1,8 +1,8 @@
 import pygame as pg
 import pygame_gui as pygui
-from src.Gameloop import GameLoop
-from src.Enemy import Enemy
-from src.Player import Player
+from .Gameloop import GameLoop
+from .Enemy import Enemy
+from .Player import Player
 from pygame._sdl2 import Window
 
 class UIManager:

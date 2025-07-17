@@ -1,6 +1,8 @@
-import src.UIManager as uim
-import src.Gameloop as gl
 
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+import src.UIManager as uim
 """
 GAMENAME_TBD von Daniel Kern und Angelo Walburger
 
@@ -19,10 +21,8 @@ Optionen zum upgraden von Runs:
 
 """
 
-def main():
-    print("Hello World!")
 
 
 if __name__ == "__main__":
-    main()
+    
     ui = uim.UIManager()
