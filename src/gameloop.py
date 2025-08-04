@@ -15,7 +15,6 @@ class GameLoop():
         self.playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
         self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
         #self.refill_hands()
-        self.winner = None
         self.refill_hands()
         #self.execute_turn()
 
@@ -54,15 +53,24 @@ class GameLoop():
 
     def execute_turn(self, chosenCardIndex:int):
         #Check if the player and enemy have cards in their hands
+        if self.player.hp <= 0:
+            print("You have lost the game!")
+            StateManager.setState("defeat")
+            return
+        if self.enemy.hp <= 0:
+            print("You have won the game!")
+            StateManager.setState("victory")
+            return
+        
         if StateManager.getState() == "inGame":            
             if not self.player.hand:
                 print("You have no cards in your hand!")
-                StateManager.set_game_state("victory")
+                StateManager.setState("victory")
                 self.winner = "Enemy"
                 return self.winner
             if not self.enemy.hand:
                 print("The enemy has no cards in their hand!")
-                self.winner = "Player"
+                StateManager.setState("defeat")
                 return self.winner
             
             #Player's turn 
