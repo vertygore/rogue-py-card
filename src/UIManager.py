@@ -1,8 +1,10 @@
 import pygame as pg
 import pygame_gui as pygui
-from .Gameloop import GameLoop
-from .Enemy import Enemy
-from .Player import Player
+import os
+import sys
+from Gameloop import GameLoop
+from Enemy import Enemy
+from Player import Player
 from pygame._sdl2 import Window
 
 class UIManager:
@@ -11,6 +13,17 @@ class UIManager:
     """
     def __init__(self):
         pg.init()
+
+        # Sicherstellen, dass wir von überall aus starten können
+        SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+        PROJECT_ROOT = os.path.normpath(os.path.join(SCRIPT_DIR, ".."))
+        sys.path.append(PROJECT_ROOT)
+
+        # Build theme path
+        theme_path = os.path.join(PROJECT_ROOT, "ressources", "misc", "base_theme.json")
+        print("Loading theme from:", theme_path)
+        assert os.path.exists(theme_path), f"Theme file not found: {theme_path}"
+
 
         # Init Game Logic
         self.gameloop = GameLoop()
@@ -22,13 +35,13 @@ class UIManager:
         pg.display.set_caption("PYCAGADAAN")
 
         # Init UI Util
-        self.manager = pygui.UIManager(self.size)
+        self.manager = pygui.UIManager(self.size, theme_path)
         self.gameStateManager = GameStateManager('mainmenu')
         self.ingame = Ingame(self.window, self.gameStateManager, self.size, self.manager, self.gameloop)
         self.mainmenu = MainMenu(self.window, self.gameStateManager)
         self.states = {'mainmenu': self.mainmenu, 'ingame': self.ingame}
         self.clock = pg.time.Clock()
-
+        
         # Start App (+ Loop)
         self.running = True
         self.main_loop()
@@ -152,7 +165,8 @@ class Ingame():
         and positions them
         """
 
-        self.gameloop.refill_hands()
+        
+        print(self.gameloop.refill_hands())
 
         # Util var
         margin = 10
@@ -182,7 +196,7 @@ class Ingame():
                     relative_rect=pg.Rect((buttons_x, buttons_y), (w_card, h_card)),
                     text=f"P CARD {p_card_num}",
                     manager=self.manager,
-                    object_id=f"#p_hand_{p_card_num}"
+                    object_id=f"#p_hand_{p_card_num}",
                 )
                 self.p_handcards.append(btn)
 
