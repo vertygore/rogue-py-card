@@ -12,7 +12,6 @@ class TestGameLoop(unittest.TestCase):
             self.assertNotEqual(type(card), Card)
             
     def test_pos1(self):
-        # This is a placeholder for the first test case
         gameloop = GameLoop()
         result = gameloop.execute_turn(0)
         drawnCards = [item["card"] for item in result["drawnCards"]]
@@ -20,7 +19,6 @@ class TestGameLoop(unittest.TestCase):
         pass 
 
     def test_pos2(self):
-        # This is a placeholder for the first test case
         gameloop = GameLoop()
         result = gameloop.execute_turn(1)
         drawnCards = [item["card"] for item in result["drawnCards"]]
@@ -28,7 +26,7 @@ class TestGameLoop(unittest.TestCase):
         pass
     
     def test_pos3(self):
-        # This is a placeholder for the first test case
+      
         gameloop = GameLoop()
         result = gameloop.execute_turn(2)
         drawnCards = [item["card"] for item in result["drawnCards"]]
@@ -36,7 +34,7 @@ class TestGameLoop(unittest.TestCase):
         pass 
 
     def test_pos4(self):
-        # This is a placeholder for the first test case
+        
         gameloop = GameLoop()
         result = gameloop.execute_turn(3)
         drawnCards = [item["card"] for item in result["drawnCards"]]
@@ -44,7 +42,7 @@ class TestGameLoop(unittest.TestCase):
         pass 
 
     def test_pos5(self):
-        # This is a placeholder for the first test case
+       
         gameloop = GameLoop()
         result = gameloop.execute_turn(4)
         drawnCards = [item["card"] for item in result["drawnCards"]]

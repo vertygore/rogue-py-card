@@ -11,12 +11,13 @@ ANGELO:
 
 DANIEL:
 Logik:
-    1 Karten in Deck (RICHTIGE REIHENFOLGE) ( )
-    2 Karten ziehen ( )
-    3 Karten spielen ( )
+    1 Karten in Deck (RICHTIGE REIHENFOLGE) (x)
+    2 Karten ziehen (x)
+    3 Karten spielen (x)
     4 HP / Mana Management wenn Karte gespielt ( )
     5 Game Over / Win ( )
-6 Gegner AI ( )
+    6 Gegner AI (x)
+    7 
 
 
 Sonstiges (UNSORTIERT):
