@@ -13,7 +13,7 @@ class GameLoop():
         self.player = Player(hp=100, equipmentmultiplier=1.0, hand=[], mana=1)
         self.playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
         self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
-        self.refill_hands()
+        #self.refill_hands()
         #self.execute_turn()
 
 

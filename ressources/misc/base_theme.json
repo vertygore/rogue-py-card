@@ -1,0 +1,43 @@
+{
+   "defaults":
+   {
+      "misc":
+      {
+         "shape": "rectangle",
+         "border_width": "2",
+         "shadow_width": "1"
+      }
+   },
+
+   "button":
+   {
+      "images":
+         {
+             "normal_image": {
+                 "package": "ressources.img",
+                 "resource": "cat6.png"
+             },
+             "hovered_image": {
+                 "package": "ressources.img",
+                 "resource": "sillycat.gif"
+             },
+             "selected_image": {
+                 "package": "ressources.img",
+                 "resource": "cat4.png"
+             },
+             "disabled_image": {
+                 "package": "ressources.img",
+                 "resource": "cat3.png"
+            }
+         },
+         "misc":
+         {
+             "auto_scale_images": "0",
+             "state_transitions":
+             {
+                 "normal_hovered": "0",
+                 "hovered_normal": "0"
+             }
+         }
+   }
+}
