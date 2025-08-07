@@ -14,6 +14,7 @@ class GameLoop():
         self.player = Player(hp=100, equipmentmultiplier=1.0, hand=[], mana=1)
         self.playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
         self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
+        self.winner = None
         #self.refill_hands()
         self.refill_hands()
         #self.execute_turn()
@@ -52,48 +53,40 @@ class GameLoop():
         return drawn_Cards
 
     def execute_turn(self, chosenCardIndex:int):
-        #Check if the player and enemy have cards in their hands
+        
         if self.player.hp <= 0:
             print("You have lost the game!")
-            StateManager.setState("defeat")
+            self.winner = False
             return
         if self.enemy.hp <= 0:
             print("You have won the game!")
-            StateManager.setState("victory")
+            self.winner = True
             return
         
-        if StateManager.getState() == "inGame":            
-            if not self.player.hand:
-                print("You have no cards in your hand!")
-                StateManager.setState("victory")
-                self.winner = "Enemy"
-                return self.winner
-            if not self.enemy.hand:
-                print("The enemy has no cards in their hand!")
-                StateManager.setState("defeat")
-                return self.winner
-            
-            #Player's turn 
-            Utility_Function.play(self.player,  self.player.hand[chosenCardIndex], self.enemy)
-            self.player.hand[chosenCardIndex] = None  # Remove the played card from hand
+                   
+        if not self.playerdeck:
+            print("You have no cards in your Deck left!")
+            self.winner = False
+            return 
+        if not self.enemydeck:
+            print("The enemy has no cards in their Deck left!")
+            self.winner = True
+            return self.winner
+        
+        #Player's turn 
+        Utility_Function.play(self.player,  self.player.hand[chosenCardIndex], self.enemy)
+        self.player.hand[chosenCardIndex] = None  # Remove the played card from hand
 
-            # Enemy's turn to attack
-            enemyCard = self.enemy.attack(self.player)
-            self.enemy.hand.remove(enemyCard)
+        # Enemy's turn to attack
+        enemyCard = self.enemy.attack(self.player)
+        self.enemy.hand.remove(enemyCard)
 
-            # Refill hands after playing a card and passing the index of the played card to refill_hands
-            drawn_cards = self.refill_hands(deletedCardIndex=chosenCardIndex)
+        # Refill hands after playing a card and passing the index of the played card to refill_hands
+        drawn_cards = self.refill_hands(deletedCardIndex=chosenCardIndex)
 
-            # return the enemy card and the drawn cards
-            return {
-                "enemycard": enemyCard,
-                "drawnCards": drawn_cards
-                    }
-        elif StateManager.getState() == "victory":
-            print("You have won the game!")
-        elif StateManager.getState() == "defeat":
-            print("You have lost the game!")
-        elif StateManager.getState() == "inMenu":
-            print("You are currently in the main menu. Please start a new game to play.")
-        else:
-            print("Unknown game state. Please check the game state management.")
+        # return the enemy card and the drawn cards
+        return {
+            "enemycard": enemyCard,
+            "drawnCards": drawn_cards
+                }
+       

@@ -66,7 +66,7 @@ def load_Deck(jsonFilePath: str) -> List[Card]:
         for _, potion in entry.items():
             deck.append(Potion(
                 name=potion['name'],
-                cost=0,  # You can adjust if potions should cost something
+                cost=0,  
                 description=potion['desc'],
                 heal=potion['hp_heal'],
                 manaIncrease=potion['mana_heal'],
