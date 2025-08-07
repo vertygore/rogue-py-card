@@ -260,7 +260,7 @@
    },
    "#fireball":
    {
-      "rsrc.images":
+      "images":
          {
              "normal_image": {
                  "package": "rsrc.images",
