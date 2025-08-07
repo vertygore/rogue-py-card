@@ -7,6 +7,7 @@ from Gameloop import GameLoop
 from Enemy import Enemy
 from Player import Player
 from pygame._sdl2 import Window
+from EventHandler import EventHandler
 
 class UIManager:
     """
@@ -21,7 +22,7 @@ class UIManager:
         sys.path.append(PROJECT_ROOT)
 
         # Build theme path
-        theme_path = os.path.join(PROJECT_ROOT, "ressources", "misc", "base_theme.json")
+        theme_path = os.path.join(PROJECT_ROOT, "rsrc", "misc", "base_theme.json")
         print("Loading theme from:", theme_path)
         assert os.path.exists(theme_path), f"Theme file not found: {theme_path}"
 
@@ -43,6 +44,7 @@ class UIManager:
         self.gameover = GameOver(self.window, self.gameStateManager)
         self.states = {'mainmenu': self.mainmenu, 'ingame': self.ingame, 'gameover': self.gameover}
         self.clock = pg.time.Clock()
+        self.evthandler = EventHandler(self, self.ingame, self.manager, self.window, self.gameStateManager, self.gameloop)
 
         # Start App (+ Loop)
         self.running = True
@@ -55,35 +57,9 @@ class UIManager:
         while self.running:
             time_delta = self.clock.tick(60) / 1000.0 # Time Manipulation, Frame Limit
             # EVENT HANDLING
-            for event in pg.event.get():
-                if event.type == pg.QUIT: # Quit App
-                    self.running = False
-                elif event.type == pg.VIDEORESIZE: # Resize Win
-                    self.size = event.size
-                    self.window = pg.display.set_mode(self.size, pg.RESIZABLE)
-                    self.manager.set_window_resolution(self.size)
-                    self.manager.clear_and_reset()
-                    self.ingame.size = self.size
-                    self.ingame.initialized = False
-                elif event.type == pygui.UI_BUTTON_PRESSED: # UI Buttons
-                    state = self.states[self.gameStateManager.get_state()]
-                    if hasattr(state, 'buttons'): # General UI
-                        for btn, callback in state.buttons:
-                            if event.ui_element == btn:
-                                callback()
-                    if event.ui_object_id.startswith("#e_hand_"): # Enemy Hand
-                        print(f"CLICKED E CARD {event.ui_object_id}")
-                    elif event.ui_object_id.startswith("#p_hand_"): # Player Hand
-                        print(f"CLICKED P CARD {event.ui_object_id}")
-                        self.drawncards = self.gameloop.execute_turn(int(event.ui_object_id[-1]))
-                        print(self.drawncards)
-                    elif event.ui_object_id.startswith("#e_combatfield"): # Enemy Combatfield
-                        print(f"CLICKED E COMBATFIELD {event.ui_object_id}")
-                    elif event.ui_object_id.startswith("#p_combatfield"): # Player Combatfield
-                        print(f"CLICKED P COMBATFIELD {event.ui_object_id}")
-                    else:
-                        print(f"CLICKED UNKOWN FIELD {event.ui_object_id}")
 
+            for event in pg.event.get():
+                self.evthandler.handle_ingame_event(event)
                 self.states[self.gameStateManager.get_state()].run() # State Update
 
                 # Process Everything

@@ -15,25 +15,25 @@
       "images":
          {
              "normal_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat6.png"
              },
              "hovered_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "sillycat.gif"
              },
              "selected_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat4.png"
              },
              "disabled_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat3.png"
             }
          },
          "misc":
          {
-             "auto_scale_images": "1",
+             "auto_scale_images": "0",
              "state_transitions":
              {
                  "normal_hovered": "0",
@@ -46,19 +46,19 @@
       "images":
          {
              "normal_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "uppercut.png"
              },
              "hovered_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "sillycat.gif"
              },
              "selected_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat4.png"
              },
              "disabled_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat3.png"
             }
          },
@@ -77,19 +77,19 @@
       "images":
          {
              "normal_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "small_damage_potion.png"
              },
              "hovered_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "sillycat.gif"
              },
              "selected_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat4.png"
              },
              "disabled_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat3.png"
             }
          },
@@ -108,19 +108,19 @@
       "images":
          {
              "normal_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "small_shielding_spell.png"
              },
              "hovered_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "sillycat.gif"
              },
              "selected_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat4.png"
              },
              "disabled_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat3.png"
             }
          },
@@ -139,19 +139,19 @@
       "images":
          {
              "normal_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "small_health_potion.png"
              },
              "hovered_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "sillycat.gif"
              },
              "selected_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat4.png"
              },
              "disabled_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat3.png"
             }
          },
@@ -170,19 +170,19 @@
       "images":
          {
              "normal_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "small_mana_potion.png"
              },
              "hovered_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "sillycat.gif"
              },
              "selected_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat4.png"
              },
              "disabled_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat3.png"
             }
          },
@@ -201,19 +201,19 @@
       "images":
          {
              "normal_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "basic_sword.png"
              },
              "hovered_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "sillycat.gif"
              },
              "selected_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat4.png"
              },
              "disabled_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat3.png"
             }
          },
@@ -229,22 +229,22 @@
    },
    "#basic_staff":
    {
-      "images":
+      "rsrc.images":
          {
              "normal_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "basic_staff.png"
              },
              "hovered_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "sillycat.gif"
              },
              "selected_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat4.png"
              },
              "disabled_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat3.png"
             }
          },
@@ -260,22 +260,22 @@
    },
    "#fireball":
    {
-      "images":
+      "rsrc.images":
          {
              "normal_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "fireball.png"
              },
              "hovered_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "sillycat.gif"
              },
              "selected_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat4.png"
              },
              "disabled_image": {
-                 "package": "ressources.img",
+                 "package": "rsrc.images",
                  "resource": "cat3.png"
             }
          },
