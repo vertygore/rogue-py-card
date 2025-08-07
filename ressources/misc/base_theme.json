@@ -5,7 +5,8 @@
       {
          "shape": "rectangle",
          "border_width": "2",
-         "shadow_width": "1"
+         "shadow_width": "1",
+         "auto_scale_images": "0"
       }
    },
 
@@ -32,7 +33,255 @@
          },
          "misc":
          {
-             "auto_scale_images": "0",
+             "auto_scale_images": "1",
+             "state_transitions":
+             {
+                 "normal_hovered": "0",
+                 "hovered_normal": "0"
+             }
+         }
+   },
+   "#uppercut":
+   {
+      "images":
+         {
+             "normal_image": {
+                 "package": "ressources.img",
+                 "resource": "uppercut.png"
+             },
+             "hovered_image": {
+                 "package": "ressources.img",
+                 "resource": "sillycat.gif"
+             },
+             "selected_image": {
+                 "package": "ressources.img",
+                 "resource": "cat4.png"
+             },
+             "disabled_image": {
+                 "package": "ressources.img",
+                 "resource": "cat3.png"
+            }
+         },
+         "misc":
+         {
+             "auto_scale_images": "1",
+             "state_transitions":
+             {
+                 "normal_hovered": "0",
+                 "hovered_normal": "0"
+             }
+         }
+   },
+   "#small_damage_potion":
+   {
+      "images":
+         {
+             "normal_image": {
+                 "package": "ressources.img",
+                 "resource": "small_damage_potion.png"
+             },
+             "hovered_image": {
+                 "package": "ressources.img",
+                 "resource": "sillycat.gif"
+             },
+             "selected_image": {
+                 "package": "ressources.img",
+                 "resource": "cat4.png"
+             },
+             "disabled_image": {
+                 "package": "ressources.img",
+                 "resource": "cat3.png"
+            }
+         },
+         "misc":
+         {
+             "auto_scale_images": "1",
+             "state_transitions":
+             {
+                 "normal_hovered": "0",
+                 "hovered_normal": "0"
+             }
+         }
+   },
+   "#small_shielding_spell":
+   {
+      "images":
+         {
+             "normal_image": {
+                 "package": "ressources.img",
+                 "resource": "small_shielding_spell.png"
+             },
+             "hovered_image": {
+                 "package": "ressources.img",
+                 "resource": "sillycat.gif"
+             },
+             "selected_image": {
+                 "package": "ressources.img",
+                 "resource": "cat4.png"
+             },
+             "disabled_image": {
+                 "package": "ressources.img",
+                 "resource": "cat3.png"
+            }
+         },
+         "misc":
+         {
+             "auto_scale_images": "1",
+             "state_transitions":
+             {
+                 "normal_hovered": "0",
+                 "hovered_normal": "0"
+             }
+         }
+   },
+   "#small_health_potion":
+   {
+      "images":
+         {
+             "normal_image": {
+                 "package": "ressources.img",
+                 "resource": "small_health_potion.png"
+             },
+             "hovered_image": {
+                 "package": "ressources.img",
+                 "resource": "sillycat.gif"
+             },
+             "selected_image": {
+                 "package": "ressources.img",
+                 "resource": "cat4.png"
+             },
+             "disabled_image": {
+                 "package": "ressources.img",
+                 "resource": "cat3.png"
+            }
+         },
+         "misc":
+         {
+             "auto_scale_images": "1",
+             "state_transitions":
+             {
+                 "normal_hovered": "0",
+                 "hovered_normal": "0"
+             }
+         }
+   },
+   "#small_mana_potion":
+   {
+      "images":
+         {
+             "normal_image": {
+                 "package": "ressources.img",
+                 "resource": "small_mana_potion.png"
+             },
+             "hovered_image": {
+                 "package": "ressources.img",
+                 "resource": "sillycat.gif"
+             },
+             "selected_image": {
+                 "package": "ressources.img",
+                 "resource": "cat4.png"
+             },
+             "disabled_image": {
+                 "package": "ressources.img",
+                 "resource": "cat3.png"
+            }
+         },
+         "misc":
+         {
+             "auto_scale_images": "1",
+             "state_transitions":
+             {
+                 "normal_hovered": "0",
+                 "hovered_normal": "0"
+             }
+         }
+   },
+   "#basic_sword":
+   {
+      "images":
+         {
+             "normal_image": {
+                 "package": "ressources.img",
+                 "resource": "basic_sword.png"
+             },
+             "hovered_image": {
+                 "package": "ressources.img",
+                 "resource": "sillycat.gif"
+             },
+             "selected_image": {
+                 "package": "ressources.img",
+                 "resource": "cat4.png"
+             },
+             "disabled_image": {
+                 "package": "ressources.img",
+                 "resource": "cat3.png"
+            }
+         },
+         "misc":
+         {
+             "auto_scale_images": "1",
+             "state_transitions":
+             {
+                 "normal_hovered": "0",
+                 "hovered_normal": "0"
+             }
+         }
+   },
+   "#basic_staff":
+   {
+      "images":
+         {
+             "normal_image": {
+                 "package": "ressources.img",
+                 "resource": "basic_staff.png"
+             },
+             "hovered_image": {
+                 "package": "ressources.img",
+                 "resource": "sillycat.gif"
+             },
+             "selected_image": {
+                 "package": "ressources.img",
+                 "resource": "cat4.png"
+             },
+             "disabled_image": {
+                 "package": "ressources.img",
+                 "resource": "cat3.png"
+            }
+         },
+         "misc":
+         {
+             "auto_scale_images": "1",
+             "state_transitions":
+             {
+                 "normal_hovered": "0",
+                 "hovered_normal": "0"
+             }
+         }
+   },
+   "#fireball":
+   {
+      "images":
+         {
+             "normal_image": {
+                 "package": "ressources.img",
+                 "resource": "fireball.png"
+             },
+             "hovered_image": {
+                 "package": "ressources.img",
+                 "resource": "sillycat.gif"
+             },
+             "selected_image": {
+                 "package": "ressources.img",
+                 "resource": "cat4.png"
+             },
+             "disabled_image": {
+                 "package": "ressources.img",
+                 "resource": "cat3.png"
+            }
+         },
+         "misc":
+         {
+             "auto_scale_images": "1",
              "state_transitions":
              {
                  "normal_hovered": "0",

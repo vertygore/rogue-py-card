@@ -16,7 +16,6 @@ class GameLoop():
         self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
         self.winner = None
         #self.refill_hands()
-        self.refill_hands()
         #self.execute_turn()
 
 
@@ -80,7 +79,12 @@ class GameLoop():
         # Enemy's turn to attack
         enemyCard = self.enemy.attack(self.player)
         self.enemy.hand.remove(enemyCard)
+        # Enemy's turn to attack
+        enemyCard = self.enemy.attack(self.player)
+        self.enemy.hand.remove(enemyCard)
 
+        # Refill hands after playing a card and passing the index of the played card to refill_hands
+        drawn_cards = self.refill_hands(deletedCardIndex=chosenCardIndex)
         # Refill hands after playing a card and passing the index of the played card to refill_hands
         drawn_cards = self.refill_hands(deletedCardIndex=chosenCardIndex)
 

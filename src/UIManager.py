@@ -2,6 +2,7 @@ import pygame as pg
 import pygame_gui as pygui
 import os
 import sys
+import re
 from Gameloop import GameLoop
 from Enemy import Enemy
 from Player import Player
@@ -39,9 +40,10 @@ class UIManager:
         self.gameStateManager = GameStateManager('mainmenu')
         self.ingame = Ingame(self.window, self.gameStateManager, self.size, self.manager, self.gameloop)
         self.mainmenu = MainMenu(self.window, self.gameStateManager)
-        self.states = {'mainmenu': self.mainmenu, 'ingame': self.ingame}
+        self.gameover = GameOver(self.window, self.gameStateManager)
+        self.states = {'mainmenu': self.mainmenu, 'ingame': self.ingame, 'gameover': self.gameover}
         self.clock = pg.time.Clock()
-        
+
         # Start App (+ Loop)
         self.running = True
         self.main_loop()
@@ -79,6 +81,8 @@ class UIManager:
                         print(f"CLICKED E COMBATFIELD {event.ui_object_id}")
                     elif event.ui_object_id.startswith("#p_combatfield"): # Player Combatfield
                         print(f"CLICKED P COMBATFIELD {event.ui_object_id}")
+                    else:
+                        print(f"CLICKED UNKOWN FIELD {event.ui_object_id}")
 
                 self.states[self.gameStateManager.get_state()].run() # State Update
 
@@ -121,6 +125,22 @@ class Ingame():
             self.create_cards()
             self.initialized = True
         self.draw_bars()
+
+        keys = pg.key.get_pressed()
+        # Clearing buttons
+        if keys[pg.K_p]:
+            for b in self.buttons:
+                b[0].kill()
+            for b in self.p_handcards:
+                b.kill()
+            for b in self.e_handcards:
+                b.kill()
+            self.enemy_combatfield.kill()
+            self.player_combatfield.kill()
+            # Buttons can get recreated again while runnning
+            self.initialized = False
+            
+            self.gameStateManager.set_state('gameover')
 
     def create_buttons(self):
         # Util var
@@ -165,8 +185,7 @@ class Ingame():
         and positions them
         """
 
-        
-        print(self.gameloop.refill_hands())
+        self.drawn_cards = self.gameloop.refill_hands()
 
         # Util var
         margin = 10
@@ -218,6 +237,22 @@ class Ingame():
             manager=self.manager,
             object_id=f"#e_combatfield"
         )
+
+        self.draw_cards_with_ui()
+
+    def extract_crucial_card_info(self):
+        #print(self.drawn_cards)
+        for e in self.drawn_cards:
+            index_str = str(e['index'])
+            name_str = str(e['card'].name).replace(" ", "_").lower()
+            print(index_str, name_str)
+            yield index_str, name_str
+
+
+    def draw_cards_with_ui(self):
+        for idx, name in self.extract_crucial_card_info():
+            self.p_handcards[int(idx)].change_object_id(f"#{name}")
+
 
     def draw_bars(self):
         """
@@ -292,7 +327,6 @@ class MainMenu():
 
     def run(self):
         self.display.fill((0, 0, 0))
-
         title_text = self.font.render("E ZUM SPIEL STARTEN", True, (255, 255, 255))
         text_rect = title_text.get_rect(center=(self.display.get_width() // 2, self.display.get_height() // 2))
         self.display.blit(title_text, text_rect)
@@ -300,6 +334,28 @@ class MainMenu():
         keys = pg.key.get_pressed()
         if keys[pg.K_e]:
             self.gameStateManager.set_state('ingame')
+        elif keys[pg.K_p]:
+            self.gameStateManager.set_state('gameover')
+
+class GameOver():
+    """
+    Handles the UI for Game Over Screen
+    """
+    def __init__(self, display, gameStateManager):
+        self.display = display
+        self.gameStateManager = gameStateManager
+        self.font = pg.font.SysFont(None, 80)
+
+    def run(self):
+        self.display.fill((0, 0, 0))
+
+        title_text = self.font.render("GAME OVER, F ZUM NEUSTARTEN", True, (255, 255, 255))
+        text_rect = title_text.get_rect(center=(self.display.get_width() // 2, self.display.get_height() // 2))
+        self.display.blit(title_text, text_rect)
+
+        keys = pg.key.get_pressed()
+        if keys[pg.K_f]:
+            self.gameStateManager.set_state('mainmenu')
 
 
 class GameStateManager():
