@@ -2,7 +2,6 @@ import Utility_Function
 from Player import Player
 from Enemy import Enemy
 import os
-import StateManager
 
 BASE_DIR = os.path.dirname(__file__)
 JSON_PATH = os.path.join(BASE_DIR, '..', 'data', 'cards.json')
