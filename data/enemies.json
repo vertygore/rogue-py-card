@@ -1,0 +1,74 @@
+{
+    "enemy_deck": [
+        {
+            "name": "Goblin Pyromancer",
+            "health": 35,
+            "attack": 4,
+            "defense": 1,
+            "cards": [
+                { "spell": "fireball" },
+                { "spell": "fireball" },
+                { "potion": "small_dmg_potion1" },
+                { "potion": "small_dmg_potion2" },
+                { "weapon": "basic_staff" },
+                { "potion": "small_dmg_potion3" }
+            ]
+        },
+        {
+            "name": "Undead Defender",
+            "health": 50,
+            "attack": 3,
+            "defense": 5,
+            "cards": [
+                { "defense_spell": "shield" },
+                { "defense_spell": "shield" },
+                { "potion": "small_health_potion" },
+                { "weapon": "basic_sword" },
+                { "potion": "small_dmg_potion4" },
+                { "potion": "small_health_potion" }
+            ]
+        },
+        {
+            "name": "Rogue Bandit",
+            "health": 40,
+            "attack": 6,
+            "defense": 2,
+            "cards": [
+                { "attack": "uppercut" },
+                { "attack": "uppercut" },
+                { "weapon": "basic_sword" },
+                { "potion": "small_dmg_potion5" },
+                { "potion": "small_dmg_potion6" },
+                { "potion": "small_health_potion" }
+            ]
+        },
+        {
+            "name": "Corrupted Mage",
+            "health": 45,
+            "attack": 8,
+            "defense": 1,
+            "cards": [
+                { "spell": "fireball" },
+                { "spell": "fireball" },
+                { "defense_spell": "shield" },
+                { "potion": "small_mana_potion" },
+                { "potion": "small_mana_potion" },
+                { "potion": "small_dmg_potion7" }
+            ]
+        },
+        {
+            "name": "Orc Warrior",
+            "health": 60,
+            "attack": 10,
+            "defense": 3,
+            "cards": [
+                { "attack": "uppercut" },
+                { "attack": "uppercut" },
+                { "potion": "small_dmg_potion8" },
+                { "potion": "small_dmg_potion9" },
+                { "potion": "small_dmg_potion10" },
+                { "weapon": "basic_sword" }
+            ]
+        }
+    ]
+}

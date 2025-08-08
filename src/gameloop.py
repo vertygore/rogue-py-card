@@ -5,6 +5,7 @@ import os
 
 BASE_DIR = os.path.dirname(__file__)
 JSON_PATH = os.path.join(BASE_DIR, '..', 'data', 'cards.json')
+JSON_PATHEnemies = os.path.join(BASE_DIR, '..', 'data', 'enemies.json')
 
 
 class GameLoop():
@@ -12,7 +13,7 @@ class GameLoop():
         self.enemy = Enemy(name="Goblin", hp=30, description="Green and mean")
         self.player = Player(hp=100, equipmentmultiplier=1.0, hand=[], mana=1)
         self.playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
-        self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
+        self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATHEnemies))
         self.winner = None
         #self.refill_hands()
         #self.execute_turn()
@@ -41,12 +42,6 @@ class GameLoop():
             else:
                 print("You have no more cards in your deck!")
                 break
-        # Refill enemy's hand
-        while len(self.enemy.hand) < 5 and self.enemydeck:
-            self.enemy.hand.append(Utility_Function.draw_card(self.enemydeck))
-
-            if not self.enemydeck:
-                print("The enemy has no more cards in their deck!")
 
         return drawn_Cards
 
@@ -66,10 +61,6 @@ class GameLoop():
             print("You have no cards in your Deck left!")
             self.winner = False
             return 
-        if not self.enemydeck:
-            print("The enemy has no cards in their Deck left!")
-            self.winner = True
-            return self.winner
         
         #Player's turn 
         Utility_Function.play(self.player,  self.player.hand[chosenCardIndex], self.enemy)
@@ -77,13 +68,7 @@ class GameLoop():
 
         # Enemy's turn to attack
         enemyCard = self.enemy.attack(self.player)
-        self.enemy.hand.remove(enemyCard)
-        # Enemy's turn to attack
-        enemyCard = self.enemy.attack(self.player)
-        self.enemy.hand.remove(enemyCard)
 
-        # Refill hands after playing a card and passing the index of the played card to refill_hands
-        drawn_cards = self.refill_hands(deletedCardIndex=chosenCardIndex)
         # Refill hands after playing a card and passing the index of the played card to refill_hands
         drawn_cards = self.refill_hands(deletedCardIndex=chosenCardIndex)
 
