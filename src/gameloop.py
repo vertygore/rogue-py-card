@@ -9,16 +9,11 @@ JSON_PATHEnemies = os.path.join(BASE_DIR, '..', 'data', 'enemies.json')
 
 
 class GameLoop():
-    def __init__(self):
-        self.enemy = Enemy(name="Goblin", hp=30, description="Green and mean")
+    def __init__(self, enemyName: str):
+        self.enemy = Utility_Function.load_enemy_by_name(enemyName)
         self.player = Player(hp=100, equipmentmultiplier=1.0, hand=[], mana=1)
         self.playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
-        self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATHEnemies))
         self.winner = None
-        #self.refill_hands()
-        #self.execute_turn()
-
-
     
     def refill_hands(self, deletedCardIndex = None):
         drawn_Cards = []
@@ -39,7 +34,7 @@ class GameLoop():
                 self.player.hand.append(new_card)
                 drawn_Cards.append({"index": insert_index, "card": new_card})
 
-            else:
+            elif not self.playerdeck:
                 print("You have no more cards in your deck!")
                 break
 

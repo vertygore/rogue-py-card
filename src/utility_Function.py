@@ -3,7 +3,10 @@ from Card import Card, OffSpell, Potion, DefenseSpell, Weapon
 from Player import Player
 from Enemy import Enemy
 import json
-
+import os
+BASE_DIR = os.path.dirname(__file__)
+JSON_PATH = os.path.join(BASE_DIR, '..', 'data', 'cards.json')
+JSON_PATHEnemies = os.path.join(BASE_DIR, '..', 'data', 'enemies.json')
 
 def play(player: Player, card: Card, enemy: Enemy):
     print(f"Playing card: {card}")
@@ -95,6 +98,34 @@ def load_Deck(jsonFilePath: str) -> List[Card]:
 
     return deck
 
+
+def load_enemy_by_name(name: str) -> Enemy:
+    with open(JSON_PATHEnemies, 'r') as file:
+        data = json.load(file)
+
+    for enemy_data in data["enemy_deck"]:
+        if enemy_data["name"].lower() == name.lower():
+            # Convert each card in the JSON to a Card object
+            cards = []
+            allCards = load_Deck(JSON_PATH)
+            
+            for card_entry in enemy_data["cards"]:
+              for _, card_name in card_entry.items():
+                # Find the card in the allCards list
+                matching_card = next((c for c in allCards if c.name.lower() == card_name.lower()), None)
+                if matching_card:
+                    cards.append(matching_card)
+
+            return Enemy(
+                hp=enemy_data["health"],
+                equipmentmultiplier=1.0,
+                hand=cards,  
+                mana=1,
+                name=enemy_data["name"],
+                description=f"Attack: {enemy_data['attack']}, Defense: {enemy_data['defense']}"
+            )
+
+    raise ValueError(f"Enemy '{name}' not found in enemies.json")
 
 
 def draw_card(deck: List[Card]) -> Card:

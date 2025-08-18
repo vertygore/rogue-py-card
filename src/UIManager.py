@@ -28,7 +28,7 @@ class UIManager:
 
 
         # Init Game Logic
-        self.gameloop = GameLoop()
+        self.gameloop = GameLoop("Goblin Pyromancer")
 
         # Init Display
         info = pg.display.Info() 
