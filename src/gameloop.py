@@ -13,12 +13,7 @@ class GameLoop():
         self.enemy = Utility_Function.load_enemy_by_name(enemyName)
         self.player = Player(hp=100, equipmentmultiplier=1.0, hand=[], mana=1)
         self.playerdeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATH))
-        self.enemydeck = Utility_Function.load_Deck(os.path.abspath(JSON_PATHEnemies))
         self.winner = None
-        #self.refill_hands()
-        #self.execute_turn()
-
-
     
     def refill_hands(self, deletedCardIndex = None):
         drawn_Cards = []
