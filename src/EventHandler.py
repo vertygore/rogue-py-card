@@ -37,6 +37,17 @@ class EventHandler:
             elif event.ui_object_id.startswith("#p_combatfield"):
                 print(f"CLICKED P COMBATFIELD {event.ui_object_id}")
             elif hasattr(event.ui_element, "class_id"):
-                print("CLICKED P HAND INDEX:", str(event.ui_element.class_id)[-1], f"( {event.ui_object_id} )")
+                clicked_i = int(str(event.ui_element.class_id)[-1])
+                print("CLICKED P HAND INDEX:", str(clicked_i), f"( {event.ui_object_id} )")
+
+                """
+                KARTEN WERDEN GESPIELT ABER NICHT NACHGEZOGEN ???
+                KARTEN KOMMEN AUS ANDEREM DECK? NICHT AUS HAND?
+                KARTEN WERDEN NICHT GEZOGEN SONDERN EINFACH AUS DEM DECK ABGEARBEITET UND JEWEILS GESPIELT
+                """
+
+                self.gameloop.execute_turn(clicked_i)
+                self.gameloop.refill_hands(clicked_i)
+                self.ingame.draw_cards_with_ui()
             else:
                 print(f"CLICKED UNKOWN FIELD {event.ui_object_id}")

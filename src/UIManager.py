@@ -101,6 +101,7 @@ class Ingame():
             self.create_cards()
             self.initialized = True
         self.draw_bars()
+        #self.draw_cards_with_ui()
 
         keys = pg.key.get_pressed()
         # Clearing buttons

@@ -32,6 +32,7 @@ class GameLoop():
             if new_card:
                 insert_index = len(self.player.hand)
                 self.player.hand.append(new_card)
+                print("GEZOGEN", new_card)
                 drawn_Cards.append({"index": insert_index, "card": new_card})
 
             elif not self.playerdeck:
