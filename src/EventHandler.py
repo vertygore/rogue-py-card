@@ -36,5 +36,7 @@ class EventHandler:
                 print(f"CLICKED E COMBATFIELD {event.ui_object_id}")
             elif event.ui_object_id.startswith("#p_combatfield"):
                 print(f"CLICKED P COMBATFIELD {event.ui_object_id}")
+            elif hasattr(event.ui_element, "class_id"):
+                print("CLICKED P HAND INDEX:", str(event.ui_element.class_id)[-1], f"( {event.ui_object_id} )")
             else:
                 print(f"CLICKED UNKOWN FIELD {event.ui_object_id}")

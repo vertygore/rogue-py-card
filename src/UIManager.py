@@ -2,7 +2,7 @@ import pygame as pg
 import pygame_gui as pygui
 import os
 import sys
-import re
+from pygame_gui.core import ObjectID
 from Gameloop import GameLoop
 from Enemy import Enemy
 from Player import Player
@@ -191,8 +191,9 @@ class Ingame():
                     relative_rect=pg.Rect((buttons_x, buttons_y), (w_card, h_card)),
                     text=f"P CARD {p_card_num}",
                     manager=self.manager,
-                    object_id=f"#p_hand_{p_card_num}",
+                    object_id="c_btn"
                 )
+                btn.class_id = f"@p_hand_{p_card_num}"
                 self.p_handcards.append(btn)
 
             buttons_x += w_card + margin # Offset for Positioning
